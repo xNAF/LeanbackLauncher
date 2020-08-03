@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="search_orb_text_to_show">
         <item>Попробуйте выполнить поиск по запросу \"Константин Хабенский\"</item>
         <item>Попробуйте выполнить поиск по запросу \"Сергей Безруков\"</item>
@@ -31,4 +32,5 @@
         <item>Скажите \"Открыть YouTube\"</item>
         <item>Скажите \"Открыть Play Фильмы\"</item>
     </string-array>
+
 </resources>
