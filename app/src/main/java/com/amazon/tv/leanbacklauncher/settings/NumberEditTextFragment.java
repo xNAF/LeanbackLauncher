@@ -1,10 +1,8 @@
 package com.amazon.tv.leanbacklauncher.settings;
 
-import android.content.Context;
-import android.support.v17.leanback.app.GuidedStepFragment;
-import android.support.v17.leanback.app.GuidedStepSupportFragment;
-import android.support.v7.preference.EditTextPreference;
-import android.util.AttributeSet;
+import androidx.leanback.app.GuidedStepFragment;
+import androidx.leanback.app.GuidedStepSupportFragment;
+import androidx.preference.EditTextPreference;
 
 /**
  * Created by rockon999 on 2/22/18.

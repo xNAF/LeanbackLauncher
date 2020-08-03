@@ -2,12 +2,12 @@ package com.amazon.tv.leanbacklauncher.notifications;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.v4.util.ArraySet;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.util.DiffUtil.Callback;
-import android.support.v7.util.DiffUtil.DiffResult;
-import android.support.v7.util.ListUpdateCallback;
-import android.support.v7.widget.RecyclerView.ViewHolder;
+import androidx.collection.ArraySet;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.DiffUtil.Callback;
+import androidx.recyclerview.widget.DiffUtil.DiffResult;
+import androidx.recyclerview.widget.ListUpdateCallback;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 
 import com.amazon.tv.leanbacklauncher.util.Preconditions;

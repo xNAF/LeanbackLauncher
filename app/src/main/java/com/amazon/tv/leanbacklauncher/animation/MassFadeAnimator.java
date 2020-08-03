@@ -1,6 +1,6 @@
 package com.amazon.tv.leanbacklauncher.animation;
 
-import android.support.v17.leanback.widget.HorizontalGridView;
+import androidx.leanback.widget.HorizontalGridView;
 import android.view.View;
 import android.view.ViewGroup;
 

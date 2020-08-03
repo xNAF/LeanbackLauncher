@@ -3,7 +3,7 @@ package com.amazon.tv.leanbacklauncher.animation;
 import android.animation.TimeInterpolator;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.support.v17.leanback.widget.HorizontalGridView;
+import androidx.leanback.widget.HorizontalGridView;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;

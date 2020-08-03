@@ -2,13 +2,12 @@ package com.amazon.tv.firetv.leanbacklauncher.apps;
 
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v17.leanback.app.GuidedStepFragment;
+import androidx.leanback.app.GuidedStepFragment;
 //import android.util.Log;
 
 import java.lang.String;

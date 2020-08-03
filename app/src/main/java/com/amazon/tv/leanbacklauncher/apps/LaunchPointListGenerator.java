@@ -90,17 +90,17 @@ public class LaunchPointListGenerator {
         @SuppressLint("PrivateResource")
         public void apply() {
             switch (this.mAction) {
-                case android.support.v7.preference.R.styleable.Preference_android_icon /*0*/:
+                case androidx.preference.R.styleable.Preference_android_icon /*0*/:
                     LaunchPointListGenerator.this.addOrUpdatePackage(this.mPkgName);
-                case android.support.v7.recyclerview.R.styleable.RecyclerView_android_descendantFocusability /*1*/:
+                case androidx.recyclerview.R.styleable.RecyclerView_android_descendantFocusability /*1*/:
                     LaunchPointListGenerator.this.removePackage(this.mPkgName);
-                case android.support.v7.recyclerview.R.styleable.RecyclerView_layoutManager /*2*/:
+                case androidx.recyclerview.R.styleable.RecyclerView_layoutManager /*2*/:
                     LaunchPointListGenerator.this.addToBlacklist(this.mPkgName, this.mUpdatable);
-                case android.support.v7.preference.R.styleable.Preference_android_layout /*3*/:
+                case androidx.preference.R.styleable.Preference_android_layout /*3*/:
                     LaunchPointListGenerator.this.removeFromBlacklist(this.mPkgName, this.mUpdatable);
-                case android.support.v7.preference.R.styleable.Preference_android_title /*4*/:
+                case androidx.preference.R.styleable.Preference_android_title /*4*/:
                     LaunchPointListGenerator.this.addOrUpdateInstallingLaunchPoint(this.mLaunchPoint);
-                case android.support.v7.preference.R.styleable.Preference_android_selectable /*5*/:
+                case androidx.preference.R.styleable.Preference_android_selectable /*5*/:
                     LaunchPointListGenerator.this.removeInstallingLaunchPoint(this.mLaunchPoint, this.mSuccess);
                 default:
             }

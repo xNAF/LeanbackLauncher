@@ -8,7 +8,7 @@ import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Keep;
+import androidx.annotation.Keep;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;

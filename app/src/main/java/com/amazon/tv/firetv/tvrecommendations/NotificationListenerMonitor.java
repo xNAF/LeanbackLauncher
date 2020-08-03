@@ -12,13 +12,11 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.IBinder;
-import android.os.Build;
 import android.os.Process;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 import android.app.NotificationChannel;
 
 import com.amazon.tv.leanbacklauncher.MainActivity;

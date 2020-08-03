@@ -2,7 +2,7 @@ package com.amazon.tv.leanbacklauncher.apps;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v17.leanback.widget.BaseCardView;
+import androidx.leanback.widget.BaseCardView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.amazon.tv.leanbacklauncher.DimmableItem;

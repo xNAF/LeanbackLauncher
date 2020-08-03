@@ -3,13 +3,12 @@ package com.amazon.tv.leanbacklauncher.settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v17.leanback.app.GuidedStepSupportFragment;
-import android.support.v17.leanback.widget.GuidanceStylist;
-import android.support.v17.leanback.widget.GuidedAction;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.annotation.NonNull;
+import androidx.leanback.app.GuidedStepSupportFragment;
+import androidx.leanback.widget.GuidanceStylist;
+import androidx.leanback.widget.GuidedAction;
+import androidx.core.content.res.ResourcesCompat;
 import android.text.InputType;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.amazon.tv.firetv.leanbacklauncher.apps.AppCategory;
@@ -21,7 +20,6 @@ import com.amazon.tv.leanbacklauncher.R;
 
 import java.lang.Integer;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 

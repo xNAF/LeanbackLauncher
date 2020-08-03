@@ -11,8 +11,8 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.support.v17.leanback.widget.SearchOrbView.Colors;
-import android.support.v4.content.ContextCompat;
+import androidx.leanback.widget.SearchOrbView.Colors;
+import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -53,11 +53,11 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
     private Drawable mKeyboardFocusedIcon;
     private final int mKeyboardOrbAnimationDuration;
     private float mKeyboardOrbProgress = 0.0f;
-    private android.support.v17.leanback.widget.SearchOrbView mKeyboardOrbView;
+    private androidx.leanback.widget.SearchOrbView mKeyboardOrbView;
     private Drawable mKeyboardUnfocusedIcon;
     private final int mLaunchFadeDuration;
     private SearchLaunchListener mListener;
-    private android.support.v17.leanback.widget.SearchOrbView mMicOrbView;
+    private androidx.leanback.widget.SearchOrbView mMicOrbView;
     private Drawable mMicUnfocusedIcon;
     private ObjectAnimator mOrbAnimation;
     private final String mSearchHintText;
@@ -135,7 +135,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
     public void onFinishInflate() {
         super.onFinishInflate();
         this.mWidgetView = findViewById(R.id.widget_wrapper);
-        this.mMicOrbView = (android.support.v17.leanback.widget.SearchOrbView) findViewById(R.id.mic_orb);
+        this.mMicOrbView = (androidx.leanback.widget.SearchOrbView) findViewById(R.id.mic_orb);
         this.mMicOrbView.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 SearchOrbView.this.setSearchState(false);
@@ -166,7 +166,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
         }
         this.mOrbAnimation = null;
         if (this.mWahlbergUx) {
-            this.mKeyboardOrbView = (android.support.v17.leanback.widget.SearchOrbView) findViewById(R.id.keyboard_orb);
+            this.mKeyboardOrbView = (androidx.leanback.widget.SearchOrbView) findViewById(R.id.keyboard_orb);
             this.mKeyboardContainer = (FrameLayout) findViewById(R.id.keyboard_orb_container);
             this.mKeyboardFocusedIcon = ContextCompat.getDrawable(this.mContext, R.drawable.ic_keyboard_blue);
             this.mKeyboardUnfocusedIcon = ContextCompat.getDrawable(this.mContext, R.drawable.ic_keyboard_grey);
@@ -177,7 +177,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
             this.mKeyboardOrbView.setOnFocusChangeListener(new OnFocusChangeListener() {
                 public void onFocusChange(View v, boolean hasFocus) {
                     SearchOrbView.this.setSearchState(false);
-                    android.support.v17.leanback.widget.SearchOrbView keyboardOrbView = (android.support.v17.leanback.widget.SearchOrbView) v;
+                    androidx.leanback.widget.SearchOrbView keyboardOrbView = (androidx.leanback.widget.SearchOrbView) v;
                     keyboardOrbView.setOrbIcon(hasFocus ? SearchOrbView.this.mKeyboardFocusedIcon : SearchOrbView.this.mKeyboardUnfocusedIcon);
                     keyboardOrbView.setOrbColor(hasFocus ? SearchOrbView.this.mColorBright : SearchOrbView.this.mColorDim);
                     if (hasFocus) {
@@ -361,7 +361,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
         } else if (this.mKeyboardOrbView != null && this.mKeyboardOrbView.hasFocus()) {
             this.mMicOrbView.requestFocus();
         }
-        android.support.v17.leanback.widget.SearchOrbView searchOrbView = this.mMicOrbView;
+        androidx.leanback.widget.SearchOrbView searchOrbView = this.mMicOrbView;
         boolean z = isVisible && this.mMicOrbView.hasFocus() && !this.mWahlbergUx;
         searchOrbView.enableOrbColorAnimation(z);
     }
