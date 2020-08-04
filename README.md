@@ -1,8 +1,11 @@
 Hi!
 
-LeanbackLauncher - alternative ATV launcher for API 24 and higher
+LeanbackLauncher - alternative ATV launcher for API 22 and higher
 
-The base of the project is tsynik's ideas. 
-My idea is to adapt them for me.
+This project is my testing ground for learning the Java language 
+and based on Tsynik`s ideas.
 
-This project is my testing ground for learning the JAVA language.
+The samurai's way is to adapt them for yourself.
+
+Всегда следует брать от людей лучшее. 
+У одного возьми ум, у другого вежливость, у третьего деньги.
