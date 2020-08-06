@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.amazon.tv.firetv.leanbacklauncher.apps.AppCategory;
 import com.amazon.tv.firetv.leanbacklauncher.apps.RowPreferences;
 import com.amazon.tv.firetv.leanbacklauncher.util.FireTVUtils;
-import com.amazon.tv.firetv.leanbacklauncher.util.SharedPreferencesUtil;
+
 import com.amazon.tv.leanbacklauncher.MainActivity;
 import com.amazon.tv.leanbacklauncher.R;
 

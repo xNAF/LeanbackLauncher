@@ -2,6 +2,8 @@ package com.amazon.tv.firetv.leanbacklauncher.apps;
 
 import android.util.SparseArray;
 
+import java.util.Locale;
+
 /**
  * Created by rockon999 on 3/7/18.
  */
@@ -42,7 +44,7 @@ public enum RowType {
 
     public static RowType fromName(String name) {
         if (name == null) return null;
-        return valueOf(name.toUpperCase().trim());
+        return valueOf(name.toUpperCase(Locale.getDefault()).trim());
     }
 
     static {

@@ -373,7 +373,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context, String databaseName, boolean migrationEnabled) {
         super(context, databaseName, null, 2);
-        this.mMostRecentTimeStamp = new Long(0);
+        this.mMostRecentTimeStamp = 0L;
         this.mLock = new Object();
         this.mContext = context;
         this.mMigrationEnabled = migrationEnabled;

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +14,16 @@ import com.amazon.tv.leanbacklauncher.util.Preconditions;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Objects;
 
 public final class AnimatorLifecycle implements Joinable, Resettable {
     public final Rect lastKnownEpicenter = new Rect();
     private Animator mAnimation;
     private Runnable mCallback;
     private byte mFlags;
+
+/*
     private final Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -33,6 +38,23 @@ public final class AnimatorLifecycle implements Joinable, Resettable {
             }
         }
     };
+
+ */
+
+    private final Handler mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
+// ======================================================================
+        public void handleMessage(Message msg){
+            if (msg.what == 1) {
+                if (AnimatorLifecycle.this.isPrimed()) {
+                    AnimatorLifecycle.this.start();
+                }
+            }
+        }
+// ======================================================================
+    };
+
+
+
     private OnAnimationFinishedListener mOnAnimationFinishedListener;
     private final ArrayList<String> mRecentAnimationDumps = new ArrayList();
 
@@ -251,7 +273,7 @@ public final class AnimatorLifecycle implements Joinable, Resettable {
             return "null";
         }
         char c2;
-        StringBuilder append = new StringBuilder().append(view.getClass().getSimpleName()).append('@').append(Integer.toHexString(System.identityHashCode(view))).append("{").append(String.format("%.1f", new Object[]{Float.valueOf(view.getAlpha())})).append(" ").append(String.format("%.1f", new Object[]{Float.valueOf(view.getTranslationY())})).append(" ").append(String.format("%.1fx%.1f", new Object[]{Float.valueOf(view.getScaleX()), Float.valueOf(view.getScaleY())})).append(" ");
+        StringBuilder append = new StringBuilder().append(view.getClass().getSimpleName()).append('@').append(Integer.toHexString(System.identityHashCode(view))).append("{").append(String.format(Locale.getDefault(),"%.1f", new Object[]{Float.valueOf(view.getAlpha())})).append(" ").append(String.format(Locale.getDefault(),"%.1f", new Object[]{Float.valueOf(view.getTranslationY())})).append(" ").append(String.format(Locale.getDefault(),"%.1fx%.1f", new Object[]{Float.valueOf(view.getScaleX()), Float.valueOf(view.getScaleY())})).append(" ");
         if (view.isFocused()) {
             c2 = 'F';
         } else {

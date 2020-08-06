@@ -2,6 +2,7 @@ package com.amazon.tv.leanbacklauncher.animation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.View;
@@ -82,7 +83,10 @@ final class CircleTakeoverAnimator extends ForwardingAnimator<Animator> {
     }
 
     private static Point getScreenSize(View v) {
-        Display display = ((WindowManager) v.getContext().getSystemService("window")).getDefaultDisplay();
+
+//      Display display = ((WindowManager) v.getContext().getSystemService("window")).getDefaultDisplay();
+        Display display = ((WindowManager) v.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
         Point screenSize = new Point();
         display.getSize(screenSize);
         return screenSize;

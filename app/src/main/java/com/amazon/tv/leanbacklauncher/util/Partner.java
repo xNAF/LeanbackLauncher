@@ -211,7 +211,7 @@ public class Partner {
         if (!this.mRowDataReady) {
             return -1;
         }
-        return this.mRowPositions.get(row.trim().toLowerCase());
+        return this.mRowPositions.get(row.trim().toLowerCase(Locale.getDefault()));
     }
 
     public String getRowTitle(String row, String defaultValue) {

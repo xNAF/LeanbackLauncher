@@ -2,6 +2,7 @@ package com.amazon.tv.firetv.leanbacklauncher.apps;
 
 import android.util.SparseArray;
 
+import java.util.Locale;
 public enum AppCategory {
     OTHER(0),
     SETTINGS(1),
@@ -27,7 +28,7 @@ public enum AppCategory {
 
     public static AppCategory fromName(String name) {
         if (name == null) return null;
-        return valueOf(name.toUpperCase().trim());
+        return valueOf(name.toUpperCase(Locale.getDefault()).trim());
     }
 
     static {

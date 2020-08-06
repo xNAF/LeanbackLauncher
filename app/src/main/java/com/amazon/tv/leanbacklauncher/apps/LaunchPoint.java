@@ -30,6 +30,7 @@ import com.amazon.tv.firetv.leanbacklauncher.apps.AppCategory;
 import com.amazon.tv.firetv.leanbacklauncher.util.BannerUtil;
 import com.amazon.tv.firetv.leanbacklauncher.util.SettingsUtil;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class LaunchPoint {
@@ -178,7 +179,7 @@ public class LaunchPoint {
             Map<String, Integer> overrides = BannerUtil.BANNER_OVERRIDES;
 
             for (String str : overrides.keySet()) {
-                if (this.mPackageName.toLowerCase().contains(str)) {
+                if (this.mPackageName.toLowerCase(Locale.getDefault()).contains(str)) {
                     this.mBannerDrawable = ContextCompat.getDrawable(ctx, overrides.get(str));
                     if (this.mBannerDrawable instanceof BitmapDrawable) {
                         this.mBannerDrawable = new BitmapDrawable(res, Util.getSizeCappedBitmap(((BitmapDrawable) this.mBannerDrawable).getBitmap(), maxWidth, maxHeight));

@@ -20,7 +20,13 @@ public class LauncherApplication extends Application {
     private NewBlacklistClient mNewBlacklistClient;
     private OldBlacklistClient mOldBlacklistClient;
 
-    private class NewBlacklistClient extends SwitchingRecommendationsClient {
+    private static Context context;
+
+    public static Context getAppContext(){
+        return LauncherApplication.context;
+    }    
+
+   	private class NewBlacklistClient extends SwitchingRecommendationsClient {
         private String[] mBlacklist;
 
         public NewBlacklistClient(Context context) {
@@ -88,7 +94,10 @@ public class LauncherApplication extends Application {
         initDeviceCapabilities();
         initPrimes();
         demigrate();
-    }
+
+        LauncherApplication.context = getApplicationContext();    
+        
+        }
 
     private void initDeviceCapabilities() {
         LauncherConfiguration.setInstance(new HighEndLauncherConfiguration());

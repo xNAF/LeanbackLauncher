@@ -3,6 +3,7 @@ package com.amazon.tv.leanbacklauncher.util;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import static com.amazon.tv.leanbacklauncher.util.Lists.Change.*;
 
@@ -26,7 +27,7 @@ public final class Lists {
 
         public String toString() {
             StringBuilder buf = new StringBuilder();
-            buf.append(this.type.name().toLowerCase()).append("@").append(this.index);
+            buf.append(this.type.name().toLowerCase(Locale.getDefault())).append("@").append(this.index);
             if (this.count > 1) {
                 buf.append("x").append(this.count);
             }

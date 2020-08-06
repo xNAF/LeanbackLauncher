@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.recommendations.SwitchingRecommendationsClient;
 import com.amazon.tv.tvrecommendations.IRecommendationsService;
 
@@ -159,9 +160,14 @@ public class RecommendationsPreferenceManager {
                     if (TextUtils.isEmpty(info.appTitle)) {
                         info.appTitle = packageName;
                     }
-                    if (info.banner == null && info.icon == null) {
-                        info.icon = ContextCompat.getDrawable(this.mContext, 17301651);
-                    }
+
+
+                   if (info.banner == null && info.icon == null) {
+
+                     // info.icon = ContextCompat.getDrawable(this.mContext, 17301651);
+                        info.icon = ContextCompat.getDrawable(this.mContext, android.R.mipmap.sym_def_app_icon);
+
+                   }
                     info.blacklisted = blacklistedPackages.contains(packageName);
                     this.mPackages.add(info);
                 } catch (NameNotFoundException e) {

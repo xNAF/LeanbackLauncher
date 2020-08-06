@@ -64,7 +64,7 @@ public class Util {
             return true;
         } catch (Throwable t) {
             Log.e("LeanbackLauncher", "Could not launch intent", t);
-            Toast.makeText(context, R.string.failed_launch, 0).show();
+            Toast.makeText(context, R.string.failed_launch, Toast.LENGTH_SHORT).show();
             return false;
         }
     }

@@ -99,7 +99,7 @@ public class ViewFocusAnimator implements OnFocusChangeListener {
                 this.mFocusAnimation.cancel();
             }
             if (getFocusProgress() != (focused ? 1.0f : 0.0f)) {
-                this.mFocusAnimation.setFloatValues(new float[]{getFocusProgress(), focused ? 1.0f : 0.0f});
+                this.mFocusAnimation.setFloatValues(new float[]{getFocusProgress(), focused ? 1.0f : 0.0f});  //// BANNER SIZE IN FOCUS
                 this.mFocusAnimation.start();
                 return;
             }

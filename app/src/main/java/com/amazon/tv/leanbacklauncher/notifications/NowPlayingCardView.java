@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
@@ -27,9 +28,12 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amazon.tv.leanbacklauncher.animation.AnimatorLifecycle;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.widget.PlayingIndicatorView;
+
+import java.util.Objects;
 
 public class NowPlayingCardView extends RecommendationView {
     private boolean mAnimationStarted;
@@ -152,6 +156,9 @@ public class NowPlayingCardView extends RecommendationView {
                 NowPlayingCardView.this.adjustAnimationState();
             }
         };
+
+
+/*
         this.mHandler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -164,6 +171,22 @@ public class NowPlayingCardView extends RecommendationView {
                 }
             }
         };
+
+ */
+
+
+        this.mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
+// ======================================================================
+            public void handleMessage(Message msg){
+                if (msg.what == 1) {
+                    NowPlayingCardView.this.updatePlayProgress();
+                    NowPlayingCardView.this.mHandler.sendEmptyMessageDelayed(1, (long) NowPlayingCardView.this.mUpdateInterval);
+                }
+            }
+// ======================================================================
+        };
+
+
         this.mUpdateInterval = getResources().getInteger(R.integer.now_playing_card_update_interval_ms);
         this.mPlayingIndicator = new PlayingIndicatorView(context, null);
         this.mPlayingIndicator.setVisibility(8);

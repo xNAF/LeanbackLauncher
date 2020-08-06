@@ -110,7 +110,7 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
     public void onGuidedActionClicked(GuidedAction action) {
         super.onGuidedActionClicked(action);
         if (action.getId() == 3L && !DOWNLOAD_LINK.isEmpty()){
-            new Download(DOWNLOAD_LINK, Objects.requireNonNull(Objects.requireNonNull(getContext()).getExternalCacheDir()).toString());
+            new Download(DOWNLOAD_LINK, Objects.requireNonNull(requireContext().getExternalCacheDir()).toString());
         }
     }
 

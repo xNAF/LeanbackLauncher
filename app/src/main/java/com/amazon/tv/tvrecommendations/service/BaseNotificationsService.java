@@ -122,7 +122,7 @@ public abstract class BaseNotificationsService extends NotificationListenerServi
     public void onListenerConnected() {
         if (VERSION.SDK_INT >= 23) {
             requestInterruptionFilter(4);
-        } else if (VERSION.SDK_INT >= 21) {
+        } else if (VERSION.SDK_INT >= 22) {
             requestListenerHints(1);
         }
         // todo setOnNotificationPostedTrim(1);

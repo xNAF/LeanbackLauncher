@@ -7,10 +7,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.amazon.tv.leanbacklauncher.animation.AnimatorLifecycle;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,6 +26,8 @@ import com.amazon.tv.leanbacklauncher.trace.AppTrace;
 import com.amazon.tv.leanbacklauncher.trace.AppTrace.TraceTag;
 import com.amazon.tv.leanbacklauncher.util.Partner;
 
+import java.util.Objects;
+
 public class WallpaperDownloader {
     private final WallpaperBitmapTransform mBitmapTransform;
     private final Context mContext;
@@ -32,6 +36,8 @@ public class WallpaperDownloader {
     private final int mDownloadTimeout;
     private WallpaperHolder mDownloadedImage;
     private boolean mEnabled;
+
+/*
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -48,6 +54,27 @@ public class WallpaperDownloader {
             }
         }
     };
+
+ */
+
+    private Handler mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
+// ======================================================================
+        public void handleMessage(Message msg){
+            switch (msg.what) {
+                case 1:
+                    WallpaperDownloader.this.download();
+                    return;
+                case 2:
+                    Log.w("WallpaperDownloader", "Timeout fetching wallpaper image: " + WallpaperDownloader.this.mTarget.getRequest());
+                    WallpaperDownloader.this.mRequestManager.clear(WallpaperDownloader.this.mTarget);
+                    WallpaperDownloader.this.onDownloadFinished();
+                    return;
+                default:
+            }
+        }
+// ======================================================================
+    };
+
     private final OnDownloadFinishedListener mListener;
     private WallpaperHolder mNextImage;
     private WallpaperHolder mPreviousImage;

@@ -5,11 +5,11 @@ import android.content.res.Resources;
 import android.text.Layout;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.TextView;
+
 
 import com.amazon.tv.leanbacklauncher.R;
 
-public final class InputsTextView extends TextView {
+public final class InputsTextView extends androidx.appcompat.widget.AppCompatTextView {
     private TypedValue mPaddingDefault = new TypedValue();
     private TypedValue mPaddingWrapped = new TypedValue();
     private Resources mRes;
@@ -32,10 +32,6 @@ public final class InputsTextView extends TextView {
         init(context);
     }
 
-    public InputsTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
-    }
 
     private void init(Context context) {
         this.mRes = context.getResources();

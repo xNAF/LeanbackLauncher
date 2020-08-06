@@ -76,5 +76,25 @@ public class ClockView extends TextClock {
         String formatString = ((SimpleDateFormat) DateFormat.getTimeFormat(getContext())).toPattern().replace("a", "").trim();
         setFormat12Hour(formatString);
         setFormat24Hour(formatString);
+
+//// ------------------------------------------------------------------------------------------
+////    Date currentDate = new Date();
+
+////    Форматирование времени как "часы:минуты:секунды"
+
+////    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss a", Locale.getDefault());
+////    SimpleDateFormat FullTime = new SimpleDateFormat("EEEE, MMM d, LLL, h:mm a - HH:mm", new Locale("ru"));
+////    SimpleDateFormat TimeAmPm = new SimpleDateFormat("a", Locale.US);
+
+
+////    String testFTIM = (String) FullTime.format(currentDate);
+////    String testAMPM = (String) TimeAmPm.format(currentDate);
+
+////    Log.w("+++DATE", String.valueOf(testFTIM));
+////    Log.w("+++DATE", String.valueOf(testAMPM));
+
+////    String ampm = Integer.parseInt(time.valueOf("hh")) >= 12 ? "PM" : "AM";
+//// ------------------------------------------------------------------------------------------
+
     }
 }

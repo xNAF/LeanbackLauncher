@@ -35,7 +35,7 @@ public abstract class LauncherViewHolder extends ViewHolder implements OnClickLi
                         LauncherViewHolder.this.performLaunch();
                     } catch (LaunchException e) {
                         Log.e("LauncherViewHolder", "Could not perform launch:", e);
-                        Toast.makeText(LauncherViewHolder.this.mCtx, R.string.failed_launch, 0).show();
+                        Toast.makeText(LauncherViewHolder.this.mCtx, R.string.failed_launch, Toast.LENGTH_SHORT).show();
                     }
                 }
             });

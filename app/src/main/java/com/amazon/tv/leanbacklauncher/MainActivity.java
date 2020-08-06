@@ -27,6 +27,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+
+import androidx.leanback.widget.BaseGridView;
 import androidx.leanback.widget.OnChildViewHolderSelectedListener;
 import androidx.leanback.widget.VerticalGridView;
 import androidx.preference.PreferenceManager;
@@ -88,6 +90,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity implements OnEditModeChangedListener, OnEditModeUninstallPressedListener {
+    public static String PACKAGE_NAME;
     private AccessibilityManager mAccessibilityManager;
     private boolean mAppEditMode;
     private AppWidgetHost mAppWidgetHost;
@@ -269,6 +272,23 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             }
             Context appContext = getApplicationContext();
             setContentView(R.layout.activity_main);
+
+
+
+// xNAF - xNAF - xNAF - xNAF
+// =================================================================================================
+             PACKAGE_NAME = getApplicationContext().getPackageName();
+// =================================================================================================
+
+
+
+
+
+
+
+
+
+
             if (Partner.get(this).showLiveTvOnStartUp() && checkFirstRunAfterBoot()) {
                 Intent tvIntent = new Intent("android.intent.action.VIEW", TvContract.buildChannelUri(0));
                 tvIntent.putExtra("com.google.android.leanbacklauncher.extra.TV_APP_ON_BOOT", true);
@@ -289,7 +309,9 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             this.mAppWidgetHost = new AppWidgetHost(this, 123);
             this.mList = (VerticalGridView) findViewById(R.id.main_list_view);
             this.mList.setHasFixedSize(true);
-            this.mList.setWindowAlignment(1);
+
+            //this.mList.setWindowAlignment(1);
+            this.mList.setWindowAlignment(BaseGridView.WINDOW_ALIGN_LOW_EDGE);
             this.mList.setWindowAlignmentOffset(getResources().getDimensionPixelOffset(R.dimen.home_screen_selected_row_alignment));
             this.mList.setWindowAlignmentOffsetPercent(-1.0f);
             this.mList.setItemAlignmentOffset(0);
@@ -403,6 +425,11 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(appContext);
         if (pref.getBoolean(appContext.getString(R.string.pref_enable_recommendations_row), false))
         	startService(new Intent(this, NotificationListenerMonitor.class));
+
+
+        // start Currency Scheduler
+        // startService(new Intent(this, CurrView.Currency_Scheduler.class));
+
     }
 
     public void onDestroy() {
@@ -985,7 +1012,11 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                 }
                 if (!success) {
                     clearWidget(appWidgetId);
+
+//
                     wrapper.addView(LayoutInflater.from(this).inflate(R.layout.clock, wrapper, false));
+//
+
                     return;
                 }
                 return;
@@ -1071,10 +1102,13 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         Intent dummyIntent = new Intent("android.intent.category.LEANBACK_LAUNCHER");
         dummyIntent.setClass(this, DummyActivity.class);
 
-        boolean firstRun = PendingIntent.getActivity(this, 0, dummyIntent, 536870912) == null;
+////        boolean firstRun = PendingIntent.getActivity(this, 0, dummyIntent, 536870912) == null;
+        boolean firstRun = PendingIntent.getActivity(this, 0, dummyIntent, PendingIntent.FLAG_NO_CREATE) == null;
 
         if (firstRun) {
-            ((AlarmManager) getSystemService(Context.ALARM_SERVICE)).set(2, SystemClock.elapsedRealtime() + 864000000000L, PendingIntent.getActivity(this, 0, dummyIntent, 0));
+
+////            ((AlarmManager) getSystemService(Context.ALARM_SERVICE)).set(2, SystemClock.elapsedRealtime() + 864000000000L, PendingIntent.getActivity(this, 0, dummyIntent, 0));
+            ((AlarmManager) getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 864000000000L, PendingIntent.getActivity(this, 0, dummyIntent, 0));
         }
 
         return firstRun;

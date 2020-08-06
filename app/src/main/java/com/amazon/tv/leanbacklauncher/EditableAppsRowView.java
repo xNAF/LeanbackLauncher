@@ -397,7 +397,9 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
     }
 
     private boolean isAccessibilityEnabled() {
-        return ((AccessibilityManager) getContext().getSystemService("accessibility")).isEnabled();
+
+//      return ((AccessibilityManager) getContext().getSystemService("accessibility")).isEnabled();
+        return ((AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE)).isEnabled();
     }
 
     private boolean moveLaunchPoint(int fromPosition, int toPosition) {
