@@ -175,7 +175,7 @@ public class Util {
     }
 
     public static void playErrorSound(Context context) {
-        ((AudioManager) context.getSystemService("audio")).playSoundEffect(9);
+        ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).playSoundEffect(9);
     }
 
     public static final boolean isConfirmKey(int keyCode) {
@@ -193,12 +193,12 @@ public class Util {
 
     public static DisplayMetrics getDisplayMetrics(Context context) {
         DisplayMetrics metrics = new DisplayMetrics();
-        ((WindowManager) context.getSystemService("window")).getDefaultDisplay().getMetrics(metrics);
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
         return metrics;
     }
 
     public static boolean isInTouchExploration(Context context) {
-        AccessibilityManager am = (AccessibilityManager) context.getSystemService("accessibility");
+        AccessibilityManager am = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
         return am.isEnabled() && am.isTouchExplorationEnabled();
     }
 }

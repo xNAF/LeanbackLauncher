@@ -192,7 +192,7 @@ public abstract class NotificationsServiceAdapter<VH extends ViewHolder> extends
     }
 
     protected void serviceStatusChanged(boolean isReady) {
-        if (Log.isLoggable("NotifServiceAdapter", 3)) {
+        if (Log.isLoggable("NotifServiceAdapter", Log.DEBUG)) {
             Log.d("NotifServiceAdapter", "Notification Service Status changed. Ready = " + isReady);
         }
     }
@@ -202,7 +202,7 @@ public abstract class NotificationsServiceAdapter<VH extends ViewHolder> extends
     }
 
     public void onInitUi() {
-        if (Log.isLoggable("NotifServiceAdapter", 3)) {
+        if (Log.isLoggable("NotifServiceAdapter", Log.DEBUG)) {
             Log.d("NotifServiceAdapter", "onInitUi()");
         }
         this.mServiceConnectTraceToken = AppTrace.beginAsyncSection("connectToRecService");

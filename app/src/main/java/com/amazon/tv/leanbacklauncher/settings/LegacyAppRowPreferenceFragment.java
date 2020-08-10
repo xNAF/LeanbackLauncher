@@ -220,17 +220,17 @@ public class LegacyAppRowPreferenceFragment extends GuidedStepSupportFragment {
 
         // RECOMENDATIONS
         boolean state = RowPreferences.areRecommendationsEnabled(activity);
-        statelabel = (state) ? getString(R.string.v7_preference_on) : getString(R.string.v7_preference_off);
+        statelabel = (state) ? getString(R.string.preference_on) : getString(R.string.preference_off);
         actions.add(new GuidedAction.Builder(activity).id(ACTION_ID_RECOMENDATIONS).title(R.string.recs_row_title).description(statelabel).build());
 
         // INPUTS
         state = RowPreferences.areInputsEnabled(activity);
-        statelabel = (state) ? getString(R.string.v7_preference_on) : getString(R.string.v7_preference_off);
+        statelabel = (state) ? getString(R.string.preference_on) : getString(R.string.preference_off);
         actions.add(new GuidedAction.Builder(activity).id(ACTION_ID_INPUTS).title(R.string.inputs_row_title).description(statelabel).build());
 
         // FAV
         state = RowPreferences.areFavoritesEnabled(activity);
-        statelabel = (state) ? getString(R.string.v7_preference_on) : getString(R.string.v7_preference_off);
+        statelabel = (state) ? getString(R.string.preference_on) : getString(R.string.preference_off);
         actions.add(new GuidedAction.Builder(activity).id(++i).title(R.string.favorites_row_title).description(statelabel).build());
 
         int[] constraints = RowPreferences.getFavoriteRowConstraints(activity);
@@ -241,7 +241,7 @@ public class LegacyAppRowPreferenceFragment extends GuidedStepSupportFragment {
 
         // VIDEO
         state = categories.contains(AppCategory.VIDEO);
-        statelabel = (state) ? getString(R.string.v7_preference_on) : getString(R.string.v7_preference_off);
+        statelabel = (state) ? getString(R.string.preference_on) : getString(R.string.preference_off);
         actions.add(new GuidedAction.Builder(activity).id(++i).title(R.string.videos_row_title).description(statelabel).build());
 
         constraints = RowPreferences.getRowConstraints(AppCategory.VIDEO, activity);
@@ -252,7 +252,7 @@ public class LegacyAppRowPreferenceFragment extends GuidedStepSupportFragment {
 
         // MUSIC
         state = categories.contains(AppCategory.MUSIC);
-        statelabel = (state) ? getString(R.string.v7_preference_on) : getString(R.string.v7_preference_off);
+        statelabel = (state) ? getString(R.string.preference_on) : getString(R.string.preference_off);
         actions.add(new GuidedAction.Builder(activity).id(++i).title(R.string.music_row_title).description(statelabel).build());
 
         constraints = RowPreferences.getRowConstraints(AppCategory.MUSIC, activity);
@@ -263,7 +263,7 @@ public class LegacyAppRowPreferenceFragment extends GuidedStepSupportFragment {
 
         // GAME
         state = categories.contains(AppCategory.GAME);
-        statelabel = (state) ? getString(R.string.v7_preference_on) : getString(R.string.v7_preference_off);
+        statelabel = (state) ? getString(R.string.preference_on) : getString(R.string.preference_off);
         actions.add(new GuidedAction.Builder(activity).id(++i).title(R.string.games_row_title).description(statelabel).build());
 
         constraints = RowPreferences.getRowConstraints(AppCategory.GAME, activity);

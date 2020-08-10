@@ -195,7 +195,7 @@ public class NotificationsAdapter extends NotificationsServiceAdapter<Notificati
         }
 
         void init(TvRecommendation rec) {
-            this.itemView.setVisibility(0);
+            this.itemView.setVisibility(View.VISIBLE);
             boolean refreshSameContent = NotificationUtils.equals(rec, this.mRecommendation);
             if (this.mRecommendationView instanceof CaptivePortalNotificationCardView) {
                 ((CaptivePortalNotificationCardView) this.mRecommendationView).setRecommendation(rec, !refreshSameContent);
@@ -344,7 +344,7 @@ public class NotificationsAdapter extends NotificationsServiceAdapter<Notificati
         super(context, 300000, 600000);
         // this.mNowPlayCardListener = new NowPlayCardListener(context);
         this.mImpressionDelay = context.getResources().getInteger(R.integer.impression_delay);
-        this.mInflater = (LayoutInflater) this.mContext.getSystemService("layout_inflater");
+        this.mInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mRichRecommendationViewSupported = LauncherConfiguration.getInstance().isRichRecommendationViewEnabled();
         this.mLegacyRecommendationLayoutSupported = LauncherConfiguration.getInstance().isLegacyRecommendationLayoutEnabled();
         this.mGlideRequestManager = Glide.with(this.mContext);
@@ -543,7 +543,7 @@ public class NotificationsAdapter extends NotificationsServiceAdapter<Notificati
 
 
     private void remoteControllerClientChanged(boolean clearing) {
-        if (Log.isLoggable("NotificationsAdapter", 3)) {
+        if (Log.isLoggable("NotificationsAdapter", Log.DEBUG)) {
             Log.d("NotificationsAdapter", "remoteControllerClientChanged. Clearing= " + clearing);
         }
         this.mRecommendationsHandler.removeMessages(10);
@@ -569,7 +569,7 @@ public class NotificationsAdapter extends NotificationsServiceAdapter<Notificati
     }*/
 
     private void remoteControllerClientPlaybackStateUpdate(int state, long stateChangeTimeMs, long currentPosMs) {
-        if (Log.isLoggable("NotificationsAdapter", 3)) {
+        if (Log.isLoggable("NotificationsAdapter", Log.DEBUG)) {
             Log.d("NotificationsAdapter", "remoteControllerClientPlaybackStateUpdate. state= " + state);
         }
         //  this.mNowPlayingState = state;

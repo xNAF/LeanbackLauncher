@@ -563,8 +563,8 @@ public class AppsAdapter extends RowViewAdapter<AppsAdapter.AppViewHolder> imple
     }
 
     public void saveAppOrderSnapshot() {
-        if (Log.isLoggable("LauncherEditMode", 2)) {
-            Log.d("LauncherEditMode", "AppsAdapter saw EditMode change and initiated snapshot.");
+        if (Log.isLoggable("LauncherEditMode", Log.VERBOSE)) {
+            Log.v("LauncherEditMode", "AppsAdapter saw EditMode change and initiated snapshot.");
         }
         this.mAppsManager.saveOrderSnapshot(this.mLaunchPoints);
     }

@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -193,7 +194,7 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
         float contentTextSize = res.getDimension(R.dimen.notif_card_content_text_size); //a.getDimension(19, 0.0f);
         int contentTextColor = ContextCompat.getColor(context, R.color.notif_content_text_color);//a.getColor(20, 0);
         //a.recycle();
-        this.mTypeface = Typeface.create(font, 0);
+        this.mTypeface = Typeface.create(font, Typeface.NORMAL);
         this.mBackgroundColor = ContextCompat.getColor(context, R.color.notif_background_color);
         this.mSourceNameView = createTextView(sourceNameTextSize, sourceNameTextColor);
         this.mSourceNameView.setGravity(16);
@@ -227,15 +228,15 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
                 this.mProgressDrawable = context.getDrawable(R.drawable.card_progress_drawable);
                 this.mProgressBar = new ProgressBar(context, null, 0, 16973855);
                 this.mProgressBar.setProgressDrawable(this.mProgressDrawable);
-                this.mProgressBar.setLayoutDirection(0);
+                this.mProgressBar.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
                 addView(this.mProgressBar);
             }
-            this.mProgressBar.setVisibility(0);
+            this.mProgressBar.setVisibility(View.VISIBLE);
             this.mProgressBar.setMax(progressMax);
             this.mProgressBar.setProgress(progress);
             this.mDimmer.addDimTarget(this.mProgressDrawable);
         } else if (this.mProgressBar != null) {
-            this.mProgressBar.setVisibility(8);
+            this.mProgressBar.setVisibility(View.GONE);
             this.mDimmer.removeDimTarget(this.mProgressDrawable);
         }
     }
@@ -323,16 +324,16 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
     public void onFocusLevelSettled(boolean focused) {
         if (focused) {
             bindExpandedInfoArea();
-            this.mSourceNameView.setVisibility(8);
-            this.mTitleView.setVisibility(0);
+            this.mSourceNameView.setVisibility(View.GONE);
+            this.mTitleView.setVisibility(View.VISIBLE);
             this.mTitleView.setAlpha(1.0f);
-            this.mContentView.setVisibility(0);
+            this.mContentView.setVisibility(View.VISIBLE);
             this.mContentView.setAlpha(1.0f);
         } else {
-            this.mSourceNameView.setVisibility(0);
+            this.mSourceNameView.setVisibility(View.VISIBLE);
             this.mSourceNameView.setAlpha(1.0f);
-            this.mTitleView.setVisibility(8);
-            this.mContentView.setVisibility(8);
+            this.mTitleView.setVisibility(View.GONE);
+            this.mContentView.setVisibility(View.GONE);
         }
         setClipBounds(null);
         requestLayout();
@@ -345,9 +346,9 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
                 bindExpandedInfoArea();
                 requestLayout();
             }
-            this.mSourceNameView.setVisibility(0);
-            this.mTitleView.setVisibility(0);
-            this.mContentView.setVisibility(0);
+            this.mSourceNameView.setVisibility(View.VISIBLE);
+            this.mTitleView.setVisibility(View.VISIBLE);
+            this.mContentView.setVisibility(View.VISIBLE);
             if (this.mInfoAreaExpandedHeight == 0) {
                 measureExpandedInfoArea(calculateCardWidth());
             }
@@ -410,15 +411,15 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int cardWidth = calculateCardWidth();
-        if (this.mProgressBar != null && this.mProgressBar.getVisibility() == 0) {
-            this.mProgressBar.measure(MeasureSpec.makeMeasureSpec(cardWidth, 1073741824), MeasureSpec.makeMeasureSpec(this.mProgressBarHeight, 1073741824));
+        if (this.mProgressBar != null && this.mProgressBar.getVisibility() == View.VISIBLE) {
+            this.mProgressBar.measure(MeasureSpec.makeMeasureSpec(cardWidth, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(this.mProgressBarHeight, MeasureSpec.EXACTLY));
         }
         int startBound = this.mInfoAreaPaddingStart;
         int endBound = cardWidth - this.mInfoAreaPaddingEnd;
         if (this.mBadgeIcon != null) {
             endBound -= this.mBadgeSize + this.mGapBetweenSourceNameAndBadge;
         }
-        this.mSourceNameView.measure(MeasureSpec.makeMeasureSpec(endBound - startBound, 1073741824), MeasureSpec.makeMeasureSpec(this.mInfoAreaCollapsedHeight, 1073741824));
+        this.mSourceNameView.measure(MeasureSpec.makeMeasureSpec(endBound - startBound, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(this.mInfoAreaCollapsedHeight, MeasureSpec.EXACTLY));
         if (this.mExpandedInfoAreaBound && this.mInfoAreaExpandedHeight == 0) {
             measureExpandedInfoArea(cardWidth);
         }
@@ -455,8 +456,8 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
     }
 
     protected void measureExpandedInfoArea(int width) {
-        this.mTitleView.measure(MeasureSpec.makeMeasureSpec((int) (((float) ((width - this.mInfoAreaPaddingEnd) - this.mInfoAreaPaddingStart)) * this.mScaleFactor), 1073741824), MeasureSpec.makeMeasureSpec(0, 0));
-        this.mContentView.measure(MeasureSpec.makeMeasureSpec((int) (((float) ((((width - this.mInfoAreaPaddingEnd) - this.mInfoAreaPaddingStart) - this.mBadgeSize) - this.mGapBetweenSourceNameAndBadge)) * this.mScaleFactor), 1073741824), MeasureSpec.makeMeasureSpec(0, 0));
+        this.mTitleView.measure(MeasureSpec.makeMeasureSpec((int) (((float) ((width - this.mInfoAreaPaddingEnd) - this.mInfoAreaPaddingStart)) * this.mScaleFactor), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        this.mContentView.measure(MeasureSpec.makeMeasureSpec((int) (((float) ((((width - this.mInfoAreaPaddingEnd) - this.mInfoAreaPaddingStart) - this.mBadgeSize) - this.mGapBetweenSourceNameAndBadge)) * this.mScaleFactor), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
         this.mInfoAreaExpandedHeight = (int) (((((float) this.mInfoAreaPaddingTop) + (((float) this.mTitleView.getMeasuredHeight()) / this.mScaleFactor)) + (((float) this.mContentView.getMeasuredHeight()) / this.mScaleFactor)) + ((float) this.mInfoAreaPaddingBottom));
     }
 
@@ -474,7 +475,7 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
     }
 
     protected void layoutSourceName(int width, boolean isLayoutRtl) {
-        if (this.mSourceNameView.getVisibility() == 0) {
+        if (this.mSourceNameView.getVisibility() == View.VISIBLE) {
             layoutChild(this.mSourceNameView, this.mInfoAreaPaddingStart, this.mInfoAreaTop, width, isLayoutRtl);
         }
     }
@@ -497,7 +498,7 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
     }
 
     protected void layoutExpandedInfoArea(int width, boolean isLayoutRtl) {
-        if (this.mTitleView != null && this.mTitleView.getVisibility() == 0) {
+        if (this.mTitleView != null && this.mTitleView.getVisibility() == View.VISIBLE) {
             int start = (int) (((float) this.mInfoAreaPaddingStart) * this.mScaleFactor);
             int titleTop = (int) (((float) this.mInfoAreaTop) + (((float) this.mInfoAreaPaddingTop) * this.mScaleFactor));
             int scaledWidth = (int) (((float) width) * this.mScaleFactor);

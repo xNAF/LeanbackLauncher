@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.net.ConnectivityManager;
 import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
@@ -34,9 +35,9 @@ public class RecommendationsUtil {
             return true;
         }
         if (TextUtils.equals(tag, "Connectivity.Notification") || (!TextUtils.isEmpty(tag) && tag.startsWith("ConnectivityNotification:"))) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService("connectivity");
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             for (Network network : connectivityManager.getAllNetworks()) {
-                if (connectivityManager.getNetworkInfo(network).isConnected() && connectivityManager.getNetworkCapabilities(network).hasCapability(17)) {
+                if (connectivityManager.getNetworkInfo(network).isConnected() && connectivityManager.getNetworkCapabilities(network).hasCapability(NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL)) {
                     return true;
                 }
             }

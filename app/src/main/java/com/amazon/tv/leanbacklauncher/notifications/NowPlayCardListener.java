@@ -63,7 +63,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         public void onPlaybackStateChanged(PlaybackState state) {
             NowPlayCardListener listener = (NowPlayCardListener) this.mListener.get();
             if (listener != null) {
-                if (Log.isLoggable("NowPlayCardListener", 3)) {
+                if (Log.isLoggable("NowPlayCardListener", Log.DEBUG)) {
                     Log.d("NowPlayCardListener", "onPlaybackStateChanged: " + state);
                 }
                 listener.updatePlayback(state);
@@ -122,10 +122,10 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
     }
 
     public synchronized void setRemoteControlListener(Listener listener) throws RemoteException {
-        if (Log.isLoggable("NowPlayCardListener", 3)) {
+        if (Log.isLoggable("NowPlayCardListener", Log.DEBUG)) {
             Log.d("NowPlayCardListener", "setRemoteControlListener: " + listener);
         }
-        MediaSessionManager manager = (MediaSessionManager) this.mContext.getApplicationContext().getSystemService("media_session");
+        MediaSessionManager manager = (MediaSessionManager) this.mContext.getApplicationContext().getSystemService(Context.MEDIA_SESSION_SERVICE);
         if (listener != null) {
             manager.addOnActiveSessionsChangedListener(this, null);
             this.mNowPlayCardListener = listener;
@@ -143,7 +143,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
             metadata.writeToParcel(parcel, 0);
             // todo is this right?
             NowPlayingCardData data = new NowPlayingCardData(parcel);
-            setPendingIntentAndPackage(data, (MediaSessionManager) this.mContext.getApplicationContext().getSystemService("media_session"));
+            setPendingIntentAndPackage(data, (MediaSessionManager) this.mContext.getApplicationContext().getSystemService(Context.MEDIA_SESSION_SERVICE));
             data.title = getMetadataString(metadata, "android.media.metadata.TITLE", this.mContext.getString(R.string.unknown_title));
             String fallbackArtist = getApplicationLabel(data.playerPackage);
             if (TextUtils.isEmpty(fallbackArtist)) {
@@ -175,16 +175,16 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         if (mediaMetadata == null) {
             return null;
         }
-        Bitmap art = mediaMetadata.getBitmap("android.media.metadata.ALBUM_ART");
+        Bitmap art = mediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
         if (art == null) {
-            return mediaMetadata.getBitmap("android.media.metadata.ART");
+            return mediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_ART);
         }
         return art;
     }
 
     public Bitmap getBadgeIcon(MediaMetadata mediaMetadata) {
         if (mediaMetadata != null) {
-            return mediaMetadata.getBitmap("android.media.metadata.DISPLAY_ICON");
+            return mediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_DISPLAY_ICON);
         }
         return null;
     }
@@ -294,7 +294,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         }
         lbIntent.addCategory("android.intent.category.LAUNCHER");
         lbIntent.addFlags(270532608);
-        return PendingIntent.getActivity(this.mContext, 0, lbIntent, 134217728);
+        return PendingIntent.getActivity(this.mContext, 0, lbIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private Bitmap generateArtwork(String playerPackage) {
@@ -319,7 +319,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
     }
 
     public void checkForMediaSession() {
-        MediaSessionManager manager = (MediaSessionManager) this.mContext.getApplicationContext().getSystemService("media_session");
+        MediaSessionManager manager = (MediaSessionManager) this.mContext.getApplicationContext().getSystemService(Context.MEDIA_SESSION_SERVICE);
         if (manager != null) {
             if (!this.mIsTestRunning) {
                 new MediaSession(this.mContext.getApplicationContext(), "NowPlayCardListener").release();

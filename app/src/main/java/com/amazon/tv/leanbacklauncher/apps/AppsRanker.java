@@ -181,7 +181,7 @@ public class AppsRanker implements Listener {
             synchronized (this.mCachedActions) {
                 if (this.mQueryingScores) {
                     if (Log.isLoggable(TAG, Log.VERBOSE)) {
-                        Log.d(TAG, "Scores not ready, caching this action");
+                        Log.v(TAG, "Scores not ready, caching this action");
                     }
                     this.mCachedActions.add(new CachedAction(key, component, group, actionType)); // , category
                     return;
@@ -217,7 +217,7 @@ public class AppsRanker implements Listener {
         if (registerListenerIfNecessary(listener)) {
             return false;
         }
-        if (Log.isLoggable("AppsRanker", 2)) {
+        if (Log.isLoggable("AppsRanker", Log.VERBOSE)) {
             Log.v("AppsRanker", "refreshing Launchpoint ranking");
         }
         synchronized (this.mEntitiesLock) {
@@ -245,7 +245,7 @@ public class AppsRanker implements Listener {
     }
 
     public int insertLaunchPoint(ArrayList<LaunchPoint> launchPoints, LaunchPoint newLp) {
-        if (Log.isLoggable("AppsRanker", 2)) {
+        if (Log.isLoggable("AppsRanker", Log.VERBOSE)) {
             Log.v("AppsRanker", "Inserting new LaunchPoint");
         }
         if (registerListenerIfNecessary(null)) {
@@ -283,8 +283,8 @@ public class AppsRanker implements Listener {
         synchronized (this.mCachedActions) {
             mustRegister = this.mQueryingScores;
             if (mustRegister) {
-                if (Log.isLoggable("AppsRanker", 2)) {
-                    Log.d("AppsRanker", "Entities not ready");
+                if (Log.isLoggable("AppsRanker", Log.VERBOSE)) {
+                    Log.v("AppsRanker", "Entities not ready");
                 }
                 if (listener != null) {
                     this.mListeners.add(listener);
@@ -300,8 +300,8 @@ public class AppsRanker implements Listener {
         }
         synchronized (this.mCachedActions) {
             this.mQueryingScores = false;
-            if (Log.isLoggable("AppsRanker", 2)) {
-                Log.d("AppsRanker", "Scores retrieved, playing back " + this.mCachedActions.size() + " actions");
+            if (Log.isLoggable("AppsRanker", Log.VERBOSE)) {
+                Log.v("AppsRanker", "Scores retrieved, playing back " + this.mCachedActions.size() + " actions");
             }
             while (!this.mCachedActions.isEmpty()) {
                 CachedAction action = (CachedAction) this.mCachedActions.remove();

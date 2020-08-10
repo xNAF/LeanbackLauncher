@@ -135,11 +135,11 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
     }
 
     public void clearUninstallAndFinishLayers() {
-        this.mUninstallIconCircle.setVisibility(8);
-        this.mUninstallText.setVisibility(8);
-        this.mUninstallIcon.setVisibility(8);
-        this.mUninstallCircle.setVisibility(8);
-        this.mFinishButton.setVisibility(8);
+        this.mUninstallIconCircle.setVisibility(View.GONE);
+        this.mUninstallText.setVisibility(View.GONE);
+        this.mUninstallIcon.setVisibility(View.GONE);
+        this.mUninstallCircle.setVisibility(View.GONE);
+        this.mFinishButton.setVisibility(View.GONE);
     }
 
     public void addActionListener(EditModeViewActionListener listener) {

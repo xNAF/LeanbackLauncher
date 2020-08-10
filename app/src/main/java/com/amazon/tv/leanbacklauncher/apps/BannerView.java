@@ -192,7 +192,7 @@ public class BannerView extends FrameLayout implements OnLongClickListener, Dimm
 
     public void clearBannerForRecycle() {
         clearFocus();
-        this.mEditFocusFrame.setVisibility(8);
+        this.mEditFocusFrame.setVisibility(View.GONE);
     }
 
     public void removeSelectedListener(BannerSelectedChangedListener listener) {
@@ -210,10 +210,10 @@ public class BannerView extends FrameLayout implements OnLongClickListener, Dimm
         if (this.mEditMode && hasFocus()) {
             this.mDimmer.setDimState(ViewDimmer.DimState.ACTIVE, false);
             if (isSelected()) {
-                this.mEditFocusFrame.setVisibility(8);
+                this.mEditFocusFrame.setVisibility(View.GONE);
                 return;
             }
-            this.mEditFocusFrame.setVisibility(0); // 0 - VISIBLE. 8 - INVISIBLE
+            this.mEditFocusFrame.setVisibility(View.VISIBLE); // 0 - VISIBLE. 8 - INVISIBLE
             post(new Runnable() {
                 public void run() {
                     BannerView.this.requestLayout();
@@ -221,7 +221,7 @@ public class BannerView extends FrameLayout implements OnLongClickListener, Dimm
             });
             return;
         }
-        this.mEditFocusFrame.setVisibility(8);
+        this.mEditFocusFrame.setVisibility(View.GONE);
     }
 
     public void onEditModeChanged(boolean editMode) {
@@ -248,9 +248,9 @@ public class BannerView extends FrameLayout implements OnLongClickListener, Dimm
         // focus outline
         if (this.mFocusFrame != null) {
             if (hasFocus())
-                this.mFocusFrame.setVisibility(0);
+                this.mFocusFrame.setVisibility(View.VISIBLE);
             else
-                this.mFocusFrame.setVisibility(8);
+                this.mFocusFrame.setVisibility(View.GONE);
         }
     }
 
@@ -315,8 +315,8 @@ public class BannerView extends FrameLayout implements OnLongClickListener, Dimm
                 if (selected) {
                     notifyEditModeManager(selected);
                 }
-                if (Log.isLoggable("LauncherEditMode", 2)) {
-                    Log.d("LauncherEditMode", "BannerView selected is now: " + isSelected());
+                if (Log.isLoggable("LauncherEditMode", Log.VERBOSE)) {
+                    Log.v("LauncherEditMode", "BannerView selected is now: " + isSelected());
                 }
             }
             this.mLeavingEditMode = false;

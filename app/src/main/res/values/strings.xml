@@ -157,6 +157,8 @@ or recommendations will not work properly."</string>
     <string name="update_no_info">No information</string>
     <string name="update_no_updates">No updates found</string>
     <string name="update_pending">Update pending…</string>
+    <string name="preference_off">OFF</string>
+    <string name="preference_on">ON</string>
     <string name="videos_row_title">Show Videos Row</string>
     <string name="wallpaper_title">Default Wallpaper</string>
 

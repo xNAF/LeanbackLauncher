@@ -3,6 +3,7 @@ package com.amazon.tv.leanbacklauncher.graphics;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
 public final class ClipCircleDrawable extends Drawable {
@@ -27,6 +28,6 @@ public final class ClipCircleDrawable extends Drawable {
     }
 
     public int getOpacity() {
-        return -3;
+        return PixelFormat.TRANSLUCENT;
     }
 }

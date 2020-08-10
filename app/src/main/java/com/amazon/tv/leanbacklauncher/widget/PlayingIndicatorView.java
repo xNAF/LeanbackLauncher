@@ -41,7 +41,7 @@ public class PlayingIndicatorView extends View {
         });
         this.mPaint = new Paint();
         this.mPaint.setColor(-1);
-        setLayerType(1, null);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setImportantForAccessibility(2);
     }
 
@@ -70,7 +70,7 @@ public class PlayingIndicatorView extends View {
     }
 
     public void startAnimationIfVisible() {
-        if (getVisibility() == 0) {
+        if (getVisibility() == View.VISIBLE) {
             this.mAnimator.start();
             postInvalidate();
         }

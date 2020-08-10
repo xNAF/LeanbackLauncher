@@ -11,6 +11,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -65,24 +66,24 @@ public class NowPlayingCardView extends RecommendationView {
         pauseFadeInAnim.setTarget(this.mPauseImage);
         pauseFadeInAnim.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
-                NowPlayingCardView.this.mPauseImage.setVisibility(0);
+                NowPlayingCardView.this.mPauseImage.setVisibility(View.VISIBLE);
             }
         });
         pauseFadeOutAnim.setTarget(this.mPauseImage);
         pauseFadeOutAnim.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
-                NowPlayingCardView.this.mPauseImage.setVisibility(0);
+                NowPlayingCardView.this.mPauseImage.setVisibility(View.VISIBLE);
             }
 
             public void onAnimationEnd(Animator animation) {
-                NowPlayingCardView.this.mPauseImage.setVisibility(8);
+                NowPlayingCardView.this.mPauseImage.setVisibility(View.GONE);
             }
         });
         threeBarFadeInAnimator.setTarget(this.mPlayingIndicator);
         threeBarFadeInAnimator.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
                 NowPlayingCardView.this.mPlayingIndicator.startAnimationIfVisible();
-                NowPlayingCardView.this.mPlayingIndicator.setVisibility(0);
+                NowPlayingCardView.this.mPlayingIndicator.setVisibility(View.VISIBLE);
             }
 
             public void onAnimationEnd(Animator animation) {
@@ -92,12 +93,12 @@ public class NowPlayingCardView extends RecommendationView {
         threeBarFadeOutAnimator.setTarget(this.mPlayingIndicator);
         threeBarFadeOutAnimator.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
-                NowPlayingCardView.this.mPlayingIndicator.setVisibility(0);
+                NowPlayingCardView.this.mPlayingIndicator.setVisibility(View.VISIBLE);
             }
 
             public void onAnimationEnd(Animator animation) {
                 NowPlayingCardView.this.mPlayingIndicator.stopAnimation();
-                NowPlayingCardView.this.mPlayingIndicator.setVisibility(8);
+                NowPlayingCardView.this.mPlayingIndicator.setVisibility(View.GONE);
             }
         });
         this.mFadeInAnimation.playSequentially(new Animator[]{pauseFadeOutAnim, threeBarFadeInAnimator});
@@ -141,7 +142,7 @@ public class NowPlayingCardView extends RecommendationView {
         ViewParent viewParent = this;
         while (viewParent instanceof View) {
             View view = (View) viewParent;
-            if (view.getAlpha() <= 0.0f || view.getVisibility() != 0) {
+            if (view.getAlpha() <= 0.0f || view.getVisibility() != View.VISIBLE) {
                 return false;
             }
             viewParent = view.getParent();
@@ -189,7 +190,7 @@ public class NowPlayingCardView extends RecommendationView {
 
         this.mUpdateInterval = getResources().getInteger(R.integer.now_playing_card_update_interval_ms);
         this.mPlayingIndicator = new PlayingIndicatorView(context, null);
-        this.mPlayingIndicator.setVisibility(8);
+        this.mPlayingIndicator.setVisibility(View.GONE);
         this.mPauseImage = new ImageView(context);
         this.mPauseImage.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_now_playing_paused));
         this.mPauseImage.setLayoutParams(new LayoutParams(-2, -2));
@@ -275,7 +276,7 @@ public class NowPlayingCardView extends RecommendationView {
         super.onLayout(changed, left, top, right, bottom);
         int width = right - left;
         int height = bottom - top;
-        if (getLayoutDirection() != 1) {
+        if (getLayoutDirection() != View.LAYOUT_DIRECTION_RTL) {
             isLayoutRtl = false;
         }
         layoutMainImage(width);
@@ -358,7 +359,7 @@ public class NowPlayingCardView extends RecommendationView {
         } else {
             image = ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.ic_now_playing_default, null);
         }
-        if (!(image == null || image.getOpacity() == -1)) {
+        if (!(image == null || image.getOpacity() == PixelFormat.OPAQUE)) {
             Bitmap opaqueBitmap = Bitmap.createBitmap(image.getIntrinsicWidth(), image.getIntrinsicHeight(), Config.ARGB_8888);
             Canvas canvas = new Canvas(opaqueBitmap);
             canvas.drawColor(ContextCompat.getColor(getContext(), R.color.notif_background_color));

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Bitmap;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.request.target.SizeReadyCallback;
@@ -93,7 +95,7 @@ public class RecommendationCardView extends RecommendationView {
         super.onLayout(changed, left, top, right, bottom);
         int width = right - left;
         int height = bottom - top;
-        if (getLayoutDirection() != 1) {
+        if (getLayoutDirection() != View.LAYOUT_DIRECTION_RTL) {
             isLayoutRtl = false;
         }
         layoutMainImage(width);

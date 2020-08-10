@@ -349,7 +349,7 @@ public abstract class NotificationsViewAdapter<VH extends ViewHolder> extends Ro
         if (index != -1) {
             this.mMasterList.remove(index);
             masterListHasChanged();
-            if (Log.isLoggable("NotifViewAdapter", 3)) {
+            if (Log.isLoggable("NotifViewAdapter", Log.DEBUG)) {
                 Log.d("NotifViewAdapter", "Recommendation Removed from position" + (index + getNonNotifItemCount()) + ": " + rec);
             }
         }

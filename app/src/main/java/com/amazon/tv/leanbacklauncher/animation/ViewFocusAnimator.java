@@ -125,7 +125,7 @@ public class ViewFocusAnimator implements OnFocusChangeListener {
     }
 
     protected void setHasFocus(boolean hasFocus) {
-        if (this.mEnabled && this.mTargetView.getVisibility() == 0 && this.mTargetView.isAttachedToWindow() && this.mTargetView.hasWindowFocus()) {
+        if (this.mEnabled && this.mTargetView.getVisibility() == View.VISIBLE && this.mTargetView.isAttachedToWindow() && this.mTargetView.hasWindowFocus()) {
             animateFocus(hasFocus);
         } else {
             setFocusImmediate(hasFocus);

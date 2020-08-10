@@ -144,13 +144,13 @@ public class NotificationCardView extends BaseCardView implements DimmableItem, 
         if (image != null) {
             image = image.mutate();
             this.mBadgeImage.setImageDrawable(getDeselectedBadgeIcon(image));
-            this.mBadgeImage.setVisibility(0);
+            this.mBadgeImage.setVisibility(View.VISIBLE);
             this.mBadgeImageSelected.setImageDrawable(image);
-            this.mBadgeImageSelected.setVisibility(0);
+            this.mBadgeImageSelected.setVisibility(View.VISIBLE);
             return;
         }
-        this.mBadgeImageSelected.setVisibility(8);
-        this.mBadgeImage.setVisibility(8);
+        this.mBadgeImageSelected.setVisibility(View.GONE);
+        this.mBadgeImage.setVisibility(View.GONE);
     }
 
     private Drawable getDeselectedBadgeIcon(Drawable image) {
@@ -327,9 +327,9 @@ public class NotificationCardView extends BaseCardView implements DimmableItem, 
             this.mMetaAnim.cancel();
             this.mMetaAnim = null;
         }
-        if (this.mAnimationsEnabled && getVisibility() == 0 && hasWindowFocus() && isAttachedToWindow()) {
+        if (this.mAnimationsEnabled && getVisibility() == View.VISIBLE && hasWindowFocus() && isAttachedToWindow()) {
             float f2;
-            this.mSelectedMetadataContainer.setVisibility(0);
+            this.mSelectedMetadataContainer.setVisibility(View.VISIBLE);
             setMetadataOpenFraction(expanded ? 0.0f : 1.0f);
             String str = "metadataOpenFraction";
             float[] fArr = new float[2];

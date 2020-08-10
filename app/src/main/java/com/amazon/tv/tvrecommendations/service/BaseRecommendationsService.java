@@ -142,7 +142,7 @@ public abstract class BaseRecommendationsService extends Service {
         int i = 0;
         while (i < packages.length) {
             try {
-                ApplicationInfo appInfo = pm.getApplicationInfo(packages[0], 128);
+                ApplicationInfo appInfo = pm.getApplicationInfo(packages[0], PackageManager.GET_META_DATA);
                 if (appInfo == null || (appInfo.flags & 1) == 0) {
                     return false;
                 }
@@ -175,7 +175,7 @@ public abstract class BaseRecommendationsService extends Service {
                 break;
             }
         }
-        if (!enabled && context.getPackageManager().checkPermission("android.permission.WRITE_SECURE_SETTINGS", context.getPackageName()) != -1) {
+        if (!enabled && context.getPackageManager().checkPermission("android.permission.WRITE_SECURE_SETTINGS", context.getPackageName()) != PackageManager.PERMISSION_DENIED) {
             if (listeners == null || listeners.length() == 0) {
                 listeners = component;
             } else {

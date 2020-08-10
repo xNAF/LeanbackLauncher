@@ -75,10 +75,10 @@ public class ConnectivityListener {
 
     public ConnectivityListener(Context context, Listener listener) {
         this.mContext = context;
-        this.mConnectivityManager = (ConnectivityManager) this.mContext.getApplicationContext().getSystemService("connectivity");
-        this.mWifiManager = (WifiManager) this.mContext.getSystemService("wifi");
+        this.mConnectivityManager = (ConnectivityManager) this.mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        this.mWifiManager = (WifiManager) this.mContext.getSystemService(Context.WIFI_SERVICE);
         this.mPhoneStateListener = new LeanbackLauncherPhoneStateListener(this);
-        this.mTelephonyManager = (TelephonyManager) this.mContext.getSystemService("phone");
+        this.mTelephonyManager = (TelephonyManager) this.mContext.getSystemService(Context.TELEPHONY_SERVICE);
         this.mListener = listener;
         this.mFilter = new IntentFilter();
         this.mFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -89,7 +89,7 @@ public class ConnectivityListener {
                 boolean z = false;
                 String intentAction = intent.getAction();
                 int connectionStatus = intent.getIntExtra("inetCondition", -551);
-                NetworkInfo info = ((ConnectivityManager) context.getSystemService("connectivity")).getActiveNetworkInfo();
+                NetworkInfo info = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
                 if (!(info != null && info.isAvailable() && info.isConnected())) {
                     ConnectivityListener.writeConnectivity(context, false);
                 }

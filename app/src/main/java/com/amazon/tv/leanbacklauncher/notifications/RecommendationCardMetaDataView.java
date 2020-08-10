@@ -2,6 +2,7 @@ package com.amazon.tv.leanbacklauncher.notifications;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 public class RecommendationCardMetaDataView extends RelativeLayout {
@@ -18,6 +19,6 @@ public class RecommendationCardMetaDataView extends RelativeLayout {
     }
 
     public void setVisibility(int visibility) {
-        super.setVisibility(0);
+        super.setVisibility(View.VISIBLE);
     }
 }

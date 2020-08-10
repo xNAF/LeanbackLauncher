@@ -139,8 +139,8 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
                     ((OnEditModeChangedListener) it.next()).onEditModeChanged(editMode);
                 }
             }
-            if (Log.isLoggable("EditableAppsRowView", 2)) {
-                Log.d("EditableAppsRowView", "Edit Mode is now " + this.mEditMode + ".");
+            if (Log.isLoggable("EditableAppsRowView", Log.VERBOSE)) {
+                Log.v("EditableAppsRowView", "Edit Mode is now " + this.mEditMode + ".");
             }
         }
     }
@@ -351,7 +351,7 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
                 if (getItemAnimator().isRunning()) {
                     return focused;
                 }
-                if (getLayoutDirection() == 1 && (direction == 17 || direction == 66)) {
+                if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL && (direction == 17 || direction == 66)) {
                     direction = direction == 17 ? 66 : 17;
                 }
                 if (direction == 130) {
