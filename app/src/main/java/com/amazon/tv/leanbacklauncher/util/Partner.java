@@ -93,7 +93,7 @@ public class Partner {
         if (!TextUtils.isEmpty(this.mPackageName) && !TextUtils.isEmpty(this.mReceiverName)) {
             Intent intent = new Intent("com.google.android.leanbacklauncher.action.PARTNER_CUSTOMIZATION");
             intent.setComponent(new ComponentName(this.mPackageName, this.mReceiverName));
-            intent.setFlags(268435456);
+            intent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
             intent.putExtra("com.google.android.leanbacklauncher.extra.ROW_WRAPPING_CUTOFF", context.getResources().getInteger(R.integer.two_row_cut_off));
             context.sendBroadcast(intent);
         }

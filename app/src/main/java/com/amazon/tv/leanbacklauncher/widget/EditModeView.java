@@ -160,7 +160,7 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
         setUninstallCircleLayout();
         setUninstallIconCircleLayout();
         setUninstallTextLayout();
-        this.mUninstallApp.setVisibility(uninstallMode ? 0 : 8);
+        this.mUninstallApp.setVisibility(uninstallMode ? View.VISIBLE : View.GONE);
     }
 
     public void setBannerUninstallModeWithAnimation(boolean uninstallMode, BannerView curView, EditableAppsRowView activeItems) {

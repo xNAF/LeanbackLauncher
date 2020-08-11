@@ -1,5 +1,6 @@
 package com.amazon.tv.leanbacklauncher;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlarmManager;
@@ -261,6 +262,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         void onVisibilityChange(boolean z);
     }
 
+    @SuppressLint("WrongConstant")
     protected void onCreate(Bundle savedInstanceState) {
         AppTrace.beginSection("onCreate");
         try {

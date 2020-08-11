@@ -114,7 +114,7 @@ public final class EditModeMassFadeAnimator extends PropagatingAnimator<EditMode
     protected void onResetView(ViewHolder holder) {
         if (holder.mOnOffOnly) {
             float f;
-            holder.view.setVisibility(holder.mDirection == Direction.FADE_IN ? 4 : 0);
+            holder.view.setVisibility(holder.mDirection == Direction.FADE_IN ? View.INVISIBLE : View.VISIBLE);
             View view = holder.view;
             if (holder.mDirection == Direction.FADE_IN) {
                 f = 0.0f;

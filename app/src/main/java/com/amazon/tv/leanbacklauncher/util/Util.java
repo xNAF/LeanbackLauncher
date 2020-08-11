@@ -1,5 +1,6 @@
 package com.amazon.tv.leanbacklauncher.util;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.amazon.tv.leanbacklauncher.R;
 
 public class Util {
+    @SuppressLint("WrongConstant")
     public static Intent getSearchIntent() {
         return new Intent("android.intent.action.ASSIST").addFlags(270532608);
     }
@@ -70,7 +72,7 @@ public class Util {
     }
 
     public static void startActivity(Context context, PendingIntent intent) throws SendIntentException {
-        context.startIntentSender(intent.getIntentSender(), null, 268435456, 268435456, 0);
+        context.startIntentSender(intent.getIntentSender(), null, Intent.FLAG_RECEIVER_FOREGROUND, Intent.FLAG_RECEIVER_FOREGROUND, 0);
     }
 
     public static long getInstallTimeForPackage(Context context, String pkgName) {

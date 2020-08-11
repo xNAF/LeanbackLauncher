@@ -1,5 +1,6 @@
 package com.amazon.tv.leanbacklauncher.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -47,6 +48,7 @@ public class HomeScreenView extends ViewFlipper {
         // this.mNowPlayCardListener = new NowPlayCardListener(context);
     }
 
+    @SuppressLint("CutPasteId")
     protected void onFinishInflate() {
         super.onFinishInflate();
         this.mNotifRowViewIndex = indexOfChild(findViewById(R.id.list));

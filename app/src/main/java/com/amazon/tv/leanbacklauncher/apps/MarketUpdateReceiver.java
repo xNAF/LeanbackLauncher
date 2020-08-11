@@ -39,7 +39,7 @@ public class MarketUpdateReceiver extends BroadcastReceiver {
     private boolean isNonLeanbackApp(Context context, String pkgName) {
         PackageManager pm = context.getPackageManager();
         try {
-            pm.getPackageInfo(pkgName, 1);
+            pm.getPackageInfo(pkgName, PackageManager.GET_ACTIVITIES);
             if (pm.getLeanbackLaunchIntentForPackage(pkgName) == null) {
                 return true;
             }

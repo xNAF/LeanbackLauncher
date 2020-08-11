@@ -1,5 +1,6 @@
 package com.amazon.tv.leanbacklauncher.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -287,6 +288,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private PendingIntent getPendingIntentFallback(String packageName) {
         Intent lbIntent = this.mContext.getPackageManager().getLeanbackLaunchIntentForPackage(packageName);
         if (lbIntent == null) {
