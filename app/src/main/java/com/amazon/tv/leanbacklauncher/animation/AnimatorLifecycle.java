@@ -23,26 +23,7 @@ public final class AnimatorLifecycle implements Joinable, Resettable {
     private Runnable mCallback;
     private byte mFlags;
 
-/*
-    private final Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    if (AnimatorLifecycle.this.isPrimed()) {
-                        AnimatorLifecycle.this.start();
-                        return;
-                    }
-                    return;
-                default:
-                    return;
-            }
-        }
-    };
-
- */
-
     private final Handler mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
-// ======================================================================
         public void handleMessage(Message msg){
             if (msg.what == 1) {
                 if (AnimatorLifecycle.this.isPrimed()) {
@@ -50,10 +31,7 @@ public final class AnimatorLifecycle implements Joinable, Resettable {
                 }
             }
         }
-// ======================================================================
     };
-
-
 
     private OnAnimationFinishedListener mOnAnimationFinishedListener;
     private final ArrayList<String> mRecentAnimationDumps = new ArrayList();

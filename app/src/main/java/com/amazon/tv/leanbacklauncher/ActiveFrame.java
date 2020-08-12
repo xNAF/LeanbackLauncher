@@ -86,8 +86,6 @@ public class ActiveFrame extends LinearLayout implements HomeScrollFractionListe
             this.mDownscaleFactor = 0.0f;
         }
         this.mRowMinSpacing = (int) ((1.0f - this.mDownscaleFactor) * getResources().getDimension(R.dimen.inter_card_spacing));
-
-//      this.mAccessibilityManager = (AccessibilityManager) context.getSystemService("accessibility");
         this.mAccessibilityManager = (AccessibilityManager) context.getSystemService(context.ACCESSIBILITY_SERVICE);
     }
 

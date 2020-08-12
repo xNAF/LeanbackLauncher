@@ -27,10 +27,7 @@ class AppUsageStatistics {
 
     AppUsageStatistics(Context context) {
         this.mContext = context;
-
-//      this.mUsageStatsManager = (UsageStatsManager) context.getSystemService("usagestats");
         this.mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
-
         try {
             mPrivilegedAppDir = new File(Environment.getRootDirectory(), "priv-app").getCanonicalPath();
         } catch (IOException e) {

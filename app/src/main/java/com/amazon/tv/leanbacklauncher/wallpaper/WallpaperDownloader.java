@@ -37,28 +37,7 @@ public class WallpaperDownloader {
     private WallpaperHolder mDownloadedImage;
     private boolean mEnabled;
 
-/*
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    WallpaperDownloader.this.download();
-                    return;
-                case 2:
-                    Log.w("WallpaperDownloader", "Timeout fetching wallpaper image: " + WallpaperDownloader.this.mTarget.getRequest());
-                    WallpaperDownloader.this.mRequestManager.clear(WallpaperDownloader.this.mTarget);
-                    WallpaperDownloader.this.onDownloadFinished();
-                    return;
-                default:
-                    return;
-            }
-        }
-    };
-
- */
-
     private Handler mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
-// ======================================================================
         public void handleMessage(Message msg){
             switch (msg.what) {
                 case 1:
@@ -72,7 +51,6 @@ public class WallpaperDownloader {
                 default:
             }
         }
-// ======================================================================
     };
 
     private final OnDownloadFinishedListener mListener;

@@ -213,7 +213,7 @@ public class BannerView extends FrameLayout implements OnLongClickListener, Dimm
                 this.mEditFocusFrame.setVisibility(View.GONE);
                 return;
             }
-            this.mEditFocusFrame.setVisibility(View.VISIBLE); // 0 - VISIBLE. 8 - INVISIBLE
+            this.mEditFocusFrame.setVisibility(View.VISIBLE);
             post(new Runnable() {
                 public void run() {
                     BannerView.this.requestLayout();

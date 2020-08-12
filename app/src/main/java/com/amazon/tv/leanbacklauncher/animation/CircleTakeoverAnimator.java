@@ -83,10 +83,7 @@ final class CircleTakeoverAnimator extends ForwardingAnimator<Animator> {
     }
 
     private static Point getScreenSize(View v) {
-
-//      Display display = ((WindowManager) v.getContext().getSystemService("window")).getDefaultDisplay();
         Display display = ((WindowManager) v.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
         Point screenSize = new Point();
         display.getSize(screenSize);
         return screenSize;

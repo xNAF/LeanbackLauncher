@@ -160,14 +160,9 @@ public class RecommendationsPreferenceManager {
                     if (TextUtils.isEmpty(info.appTitle)) {
                         info.appTitle = packageName;
                     }
-
-
-                   if (info.banner == null && info.icon == null) {
-
-                     // info.icon = ContextCompat.getDrawable(this.mContext, 17301651);
+                    if (info.banner == null && info.icon == null) {
                         info.icon = ContextCompat.getDrawable(this.mContext, android.R.mipmap.sym_def_app_icon);
-
-                   }
+                    }
                     info.blacklisted = blacklistedPackages.contains(packageName);
                     this.mPackages.add(info);
                 } catch (NameNotFoundException e) {

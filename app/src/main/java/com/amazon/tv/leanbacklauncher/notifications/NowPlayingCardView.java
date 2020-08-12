@@ -158,35 +158,14 @@ public class NowPlayingCardView extends RecommendationView {
             }
         };
 
-
-/*
-        this.mHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 1:
-                        NowPlayingCardView.this.updatePlayProgress();
-                        NowPlayingCardView.this.mHandler.sendEmptyMessageDelayed(1, (long) NowPlayingCardView.this.mUpdateInterval);
-                        return;
-                    default:
-                        return;
-                }
-            }
-        };
-
- */
-
-
         this.mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
-// ======================================================================
             public void handleMessage(Message msg){
                 if (msg.what == 1) {
                     NowPlayingCardView.this.updatePlayProgress();
                     NowPlayingCardView.this.mHandler.sendEmptyMessageDelayed(1, (long) NowPlayingCardView.this.mUpdateInterval);
                 }
             }
-// ======================================================================
         };
-
 
         this.mUpdateInterval = getResources().getInteger(R.integer.now_playing_card_update_interval_ms);
         this.mPlayingIndicator = new PlayingIndicatorView(context, null);
