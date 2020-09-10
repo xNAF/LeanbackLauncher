@@ -1,6 +1,5 @@
 package com.amazon.tv.leanbacklauncher;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlarmManager;
@@ -17,10 +16,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
-import android.content.pm.ActivityInfo;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.media.tv.TvContract;
 import android.net.Uri;
 import android.os.Build;
@@ -28,6 +27,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.OnHierarchyChangeListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.leanback.widget.BaseGridView;
 import androidx.leanback.widget.OnChildViewHolderSelectedListener;
@@ -36,17 +45,9 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
-import android.util.Log;
-import android.view.accessibility.AccessibilityManager;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.OnHierarchyChangeListener;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
+import com.amazon.tv.firetv.leanbacklauncher.apps.AppInfoActivity;
+import com.amazon.tv.firetv.tvrecommendations.NotificationListenerMonitor;
 import com.amazon.tv.leanbacklauncher.animation.AnimatorLifecycle;
 import com.amazon.tv.leanbacklauncher.animation.AnimatorLifecycle.OnAnimationFinishedListener;
 import com.amazon.tv.leanbacklauncher.animation.EditModeMassFadeAnimator;
@@ -80,13 +81,10 @@ import com.amazon.tv.leanbacklauncher.wallpaper.LauncherWallpaper;
 import com.amazon.tv.leanbacklauncher.wallpaper.WallpaperInstaller;
 import com.amazon.tv.leanbacklauncher.widget.EditModeView;
 import com.amazon.tv.leanbacklauncher.widget.EditModeView.OnEditModeUninstallPressedListener;
-import com.amazon.tv.firetv.leanbacklauncher.apps.AppInfoActivity;
-import com.amazon.tv.firetv.tvrecommendations.NotificationListenerMonitor;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.Class;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -128,14 +126,14 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                         activity.mIdleListeners.get(i).onIdleStateChange(activity.mIsIdle);
                     }
                     return;
-                case 3:
+                case 3: // Focus to Reccomendations or 1st Apps row
                     if (activity.mResetAfterIdleEnabled) {
                         activity.mKeepUiReset = true;
                         activity.resetLauncherState(true);
                         return;
                     }
                     return;
-                case 4:
+                case 4: // Recommendations Update
                     activity.onNotificationRowStateUpdate(msg.arg1);
                     return;
                 case 5:
@@ -206,7 +204,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
     };
     BroadcastReceiver mHomeRefreshReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-        	if (intent.getBooleanExtra("RefreshHome", false)) {
+            if (intent.getBooleanExtra("RefreshHome", false)) {
                 if (BuildConfig.DEBUG) Log.d(TAG, "KILL HOME");
                 MainActivity.this.finish();
             }
@@ -262,7 +260,6 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         void onVisibilityChange(boolean z);
     }
 
-    @SuppressLint("WrongConstant")
     protected void onCreate(Bundle savedInstanceState) {
         AppTrace.beginSection("onCreate");
         try {
@@ -285,17 +282,17 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                     finish();
                 }
             }
-			//android O fix bug orientation
-			if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			}
+            //android O fix bug orientation
+            if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
             this.mAccessibilityManager = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
-            this.mEditModeView = (EditModeView) findViewById(R.id.edit_mode_view);
+            this.mEditModeView = findViewById(R.id.edit_mode_view);
             this.mEditModeView.setUninstallListener(this);
-            this.mWallpaper = (LauncherWallpaper) findViewById(R.id.background_container);
+            this.mWallpaper = findViewById(R.id.background_container);
             this.mAppWidgetManager = AppWidgetManager.getInstance(appContext);
             this.mAppWidgetHost = new AppWidgetHost(this, 123);
-            this.mList = (VerticalGridView) findViewById(R.id.main_list_view);
+            this.mList = findViewById(R.id.main_list_view);
             this.mList.setHasFixedSize(true);
             this.mList.setWindowAlignment(BaseGridView.WINDOW_ALIGN_LOW_EDGE);
             this.mList.setWindowAlignmentOffset(getResources().getDimensionPixelOffset(R.dimen.home_screen_selected_row_alignment));
@@ -314,7 +311,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                 }
             });
             this.mList.setAnimateChildLayout(false);
-            int notifIndex = this.mHomeAdapter.getRowIndex(1);
+            int notifIndex = this.mHomeAdapter.getRowIndex(1); // RowType.NOTIFICATIONS
             if (notifIndex != -1) {
                 this.mList.setSelectedPosition(notifIndex);
             }
@@ -327,7 +324,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                         tag = (Integer) child.getTag();
                     }
                     switch (tag) {
-                        case 0:
+                        case 0: // SEARCH
                             if (child instanceof SearchOrbView) {
                                 ((SearchOrbView) child).setLaunchListener(new SearchOrbView.SearchLaunchListener() {
                                     public void onSearchLaunched() {
@@ -337,9 +334,9 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                             }
                             MainActivity.this.addWidget(false);
                             break;
-                        case 1:
-                        case 2:
-                            MainActivity.this.mHomeScreenView = (HomeScreenView) child.findViewById(R.id.home_screen_messaging);
+                        case 1: // NOTIFICATIONS
+                        case 2: // PARTNER
+                            MainActivity.this.mHomeScreenView = child.findViewById(R.id.home_screen_messaging);
                             if (MainActivity.this.mHomeScreenView != null) {
                                 HomeScreenMessaging homeScreenMessaging = MainActivity.this.mHomeScreenView.getHomeScreenMessaging();
                                 if (tag == 1) {
@@ -380,11 +377,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                 }
             });
             this.mShyMode = true;
-            if (this.mShyMode) {
-                z = false;
-            } else {
-                z = true;
-            }
+            z = !this.mShyMode;
             setShyMode(z, true);
             this.mIdlePeriod = getResources().getInteger(R.integer.idle_period);
             this.mResetPeriod = getResources().getInteger(R.integer.reset_period);
@@ -397,9 +390,8 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             filter.addAction("android.intent.action.PACKAGE_ADDED");
             filter.addDataScheme("package");
             registerReceiver(this.mPackageReplacedReceiver, filter);
-			// RefreshHome BC
-            // IntentFilter filterHome = new IntentFilter("com.amazon.tv.leanbacklauncher.MainActivity");
-            IntentFilter filterHome = new IntentFilter(this.getClass().getName()); // ACTION
+            // RefreshHome BC
+            IntentFilter filterHome = new IntentFilter(this.getClass().getName()); // ACTION com.amazon.tv.leanbacklauncher.MainActivity
             registerReceiver(this.mHomeRefreshReceiver, filterHome);
             getLoaderManager().initLoader(0, null, this.mSearchIconCallbacks);
             getLoaderManager().initLoader(1, null, this.mSearchSuggestionsCallbacks);
@@ -410,7 +402,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         Context appContext = getApplicationContext();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(appContext);
         if (pref.getBoolean(appContext.getString(R.string.pref_enable_recommendations_row), false))
-        	startService(new Intent(this, NotificationListenerMonitor.class));
+            startService(new Intent(this, NotificationListenerMonitor.class));
     }
 
     public void onDestroy() {
@@ -434,9 +426,9 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             if (this.mIsIdle) {
                 this.mHandler.sendEmptyMessage(2);
             }
-            this.mHandler.sendEmptyMessageDelayed(1, (long) this.mIdlePeriod);
+            this.mHandler.sendEmptyMessageDelayed(1, this.mIdlePeriod);
         }
-        this.mHandler.sendEmptyMessageDelayed(3, (long) this.mResetPeriod);
+        this.mHandler.sendEmptyMessageDelayed(3, this.mResetPeriod);
     }
 
     private void addIdleListener(IdleListener listener) {
@@ -501,10 +493,10 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             this.mShyMode = shy;
             changed = true;
             if (this.mShyMode) {
-            	 if (BuildConfig.DEBUG) Log.d(TAG, "setShyMode: convertFromTranslucent");
+                if (BuildConfig.DEBUG) Log.d(TAG, "setShyMode: convertFromTranslucent");
                 convertFromTranslucent();
             } else {
-                 if (BuildConfig.DEBUG) Log.d(TAG, "setShyMode: convertToTranslucent");
+                if (BuildConfig.DEBUG) Log.d(TAG, "setShyMode: convertToTranslucent");
                 // convertToTranslucent(null, null);
                 convertToTranslucent();
             }
@@ -518,31 +510,30 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         return changed;
     }
 
-	private void convertFromTranslucent() {
-		if (MainActivity.this.isTaskRoot()) return;
-		try {
-			Method convertFromTranslucent = Activity.class.getDeclaredMethod("convertFromTranslucent");
-			convertFromTranslucent.setAccessible(true);
-			convertFromTranslucent.invoke(MainActivity.this);
-		} catch (Throwable ignored) {
-		}
-	}
+    private void convertFromTranslucent() {
+        if (MainActivity.this.isTaskRoot()) return;
+        try {
+            Method convertFromTranslucent = Activity.class.getDeclaredMethod("convertFromTranslucent");
+            convertFromTranslucent.setAccessible(true);
+            convertFromTranslucent.invoke(MainActivity.this);
+        } catch (Throwable ignored) {
+        }
+    }
 
-	private void convertToTranslucent() {
-		try {
-			Class<?> translucentConversionListenerClazz = null;
-			for (Class<?> clazz : Activity.class.getDeclaredClasses()) {
-				if (clazz.getSimpleName().contains("TranslucentConversionListener")) {
-					translucentConversionListenerClazz = clazz;
-				}
-			}
-			Method convertToTranslucent = Activity.class.getDeclaredMethod("convertToTranslucent", new
-					Class[]{translucentConversionListenerClazz, ActivityOptions.class});
-			convertToTranslucent.setAccessible(true);
-			convertToTranslucent.invoke(MainActivity.this, new Object[]{null, null});
-		} catch (Throwable ignored) {
-		}
-	}
+    private void convertToTranslucent() {
+        try {
+            Class<?> translucentConversionListenerClazz = null;
+            for (Class<?> clazz : Activity.class.getDeclaredClasses()) {
+                if (clazz.getSimpleName().contains("TranslucentConversionListener")) {
+                    translucentConversionListenerClazz = clazz;
+                }
+            }
+            Method convertToTranslucent = Activity.class.getDeclaredMethod("convertToTranslucent", translucentConversionListenerClazz, ActivityOptions.class);
+            convertToTranslucent.setAccessible(true);
+            convertToTranslucent.invoke(MainActivity.this, null, null);
+        } catch (Throwable ignored) {
+        }
+    }
 
     private boolean dismissLauncher() {
         if (this.mShyMode) {
@@ -608,16 +599,13 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
     }
 
     private void resetLauncherState(boolean smooth) {
+        if (BuildConfig.DEBUG) Log.d("***** resetLauncherState", "smooth: " + smooth);
         this.mScrollManager.onScrolled(0, 0);
         this.mUserInteracted = false;
         this.mHomeAdapter.resetRowPositions(smooth);
         if (this.mAppEditMode) {
             boolean z;
-            if (smooth) {
-                z = true;
-            } else {
-                z = false;
-            }
+            z = smooth;
             setEditMode(false, z);
         }
         int notifIndex = this.mHomeAdapter.getRowIndex(1);
@@ -638,23 +626,40 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             if (!(this.mShyMode || this.mNotificationsView == null)) {
                 this.mNotificationsView.setIgnoreNextActivateBackgroundChange();
             }
+        } else { // focus on 1st Apps cat || Search (0)
+            int ar[] = {0}; // 0, 4, 8, 9, 7 - SEARCH, GAMES, MUSIC, VIDEO, FAVORITES as in buildRowList()
+            int i, x;
+            for (i = 0; i < ar.length; i++) {
+                x = ar[i];
+                int appIndex = this.mHomeAdapter.getRowIndex(x);
+                if (!(appIndex == -1 || this.mList.getSelectedPosition() == appIndex)) {
+                    if (BuildConfig.DEBUG)
+                        Log.d("***** resetLauncherState", "set focus to " + appIndex);
+                    //if (smooth) {
+                    this.mList.setSelectedPositionSmooth(appIndex);
+                    //} else {
+                    this.mList.setSelectedPosition(appIndex);
+                    //}
+                    //this.mList.getChildAt(0).requestFocus();
+                }
+            }
         }
         this.mLaunchAnimation.cancel();
     }
 
-	private boolean isBackgroundVisibleBehind() {
-		try {
-			Method isBackgroundVisibleBehind = Activity.class.getDeclaredMethod("isBackgroundVisibleBehind");
-			isBackgroundVisibleBehind.setAccessible(true);
-			//Object result = isBackgroundVisibleBehind.invoke(MainActivity.this);
-			//if (Boolean.TRUE.equals(result))
-			//	return true;
-			Boolean result = (Boolean)isBackgroundVisibleBehind.invoke(MainActivity.this);
-			return result.booleanValue();
-		} catch (Throwable ignored) {
-		}
-		return false;
-	}
+    private boolean isBackgroundVisibleBehind() {
+        try {
+            Method isBackgroundVisibleBehind = Activity.class.getDeclaredMethod("isBackgroundVisibleBehind");
+            isBackgroundVisibleBehind.setAccessible(true);
+            //Object result = isBackgroundVisibleBehind.invoke(MainActivity.this);
+            //if (Boolean.TRUE.equals(result))
+            //	return true;
+            Boolean result = (Boolean) isBackgroundVisibleBehind.invoke(MainActivity.this);
+            return result.booleanValue();
+        } catch (Throwable ignored) {
+        }
+        return false;
+    }
 
     protected void onStart() {
         boolean z = true;
@@ -665,10 +670,10 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             if (this.mAppWidgetHost != null) {
                 this.mAppWidgetHost.startListening();
             }
-			if (isBackgroundVisibleBehind()) {
-				if (BuildConfig.DEBUG) Log.d(TAG, "onStart: BackgroundVisibleBehind");
-				z = false;
-			}
+            if (isBackgroundVisibleBehind()) {
+                if (BuildConfig.DEBUG) Log.d(TAG, "onStart: BackgroundVisibleBehind");
+                z = false;
+            }
             setShyMode(z, true);
             this.mWallpaper.resetBackground();
             this.mHomeAdapter.refreshAdapterData();
@@ -701,10 +706,10 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
         try {
             boolean z = true;
             super.onResume();
-			if (isBackgroundVisibleBehind()) {
-				if (BuildConfig.DEBUG) Log.d(TAG, "onResume: BackgroundVisibleBehind");
-				z = false;
-			}
+            if (isBackgroundVisibleBehind()) {
+                if (BuildConfig.DEBUG) Log.d(TAG, "onResume: BackgroundVisibleBehind");
+                z = false;
+            }
             boolean shyChanged = setShyMode(z, true);
             if (!AppsManager.getInstance(getApplicationContext()).checkIfResortingIsNeeded() || this.mAppEditMode) {
                 forceResort = false;
@@ -725,7 +730,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                 this.mHomeAdapter.animateSearchIn();
             }
             for (int i = 0; i < this.mIdleListeners.size(); i++) {
-                ((IdleListener) this.mIdleListeners.get(i)).onVisibilityChange(true);
+                this.mIdleListeners.get(i).onVisibilityChange(true);
             }
             this.mResetAfterIdleEnabled = true;
             this.mHandler.removeMessages(3);
@@ -733,9 +738,9 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             if (this.mIsIdle) {
                 this.mHandler.sendEmptyMessage(2);
             } else {
-                this.mHandler.sendEmptyMessageDelayed(1, (long) this.mIdlePeriod);
+                this.mHandler.sendEmptyMessageDelayed(1, this.mIdlePeriod);
             }
-            this.mHandler.sendEmptyMessageDelayed(3, (long) this.mResetPeriod);
+            this.mHandler.sendEmptyMessageDelayed(3, this.mResetPeriod);
             this.mHandler.sendEmptyMessageDelayed(7, 2000);
             if (this.mLaunchAnimation.isFinished()) {
                 this.mLaunchAnimation.reset();
@@ -804,7 +809,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                 this.mAppWidgetHost.stopListening();
             }
             this.mHandler.removeCallbacksAndMessages(null);
-            this.mHandler.sendEmptyMessageDelayed(3, (long) this.mResetPeriod);
+            this.mHandler.sendEmptyMessageDelayed(3, this.mResetPeriod);
             if (this.mAppEditMode) {
                 setEditMode(false, false);
             }
@@ -852,15 +857,18 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
     }
 
     private void onNotificationRowStateUpdate(int state) {
+        Log.d("*****", "onNotificationRowStateUpdate(" + state + ") selected postion: " + mList.getSelectedPosition());
         if (state == 1 || state == 2) {
             if (!this.mUserInteracted) {
                 int searchIndex = this.mHomeAdapter.getRowIndex(0);
                 if (searchIndex != -1) {
+                    // focus on Search
                     this.mList.setSelectedPosition(searchIndex);
                     this.mList.getChildAt(searchIndex).requestFocus();
                 }
             }
         } else if (state == 0 && this.mList.getSelectedPosition() <= this.mHomeAdapter.getRowIndex(1) && this.mNotificationsView.getChildCount() > 0) {
+            // focus on Recomendations
             this.mNotificationsView.setSelectedPosition(0);
             this.mNotificationsView.getChildAt(0).requestFocus();
         }
@@ -873,17 +881,17 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
 
     public static boolean isMediaKey(int keyCode) {
         switch (keyCode) {
-            case 79:
-            case 85:
-            case 86:
-            case 87:
-            case 88:
-            case 89:
-            case 90:
-            case 91:
-            case 126:
-            case 127:
-            case 130:
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+            case KeyEvent.KEYCODE_MUTE:
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+            case KeyEvent.KEYCODE_MEDIA_PAUSE:
+            case KeyEvent.KEYCODE_MEDIA_RECORD:
                 return true;
             default:
                 return false;
@@ -893,8 +901,8 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (this.mLaunchAnimation.isPrimed() || this.mLaunchAnimation.isRunning() || this.mEditModeAnimation.isPrimed() || this.mEditModeAnimation.isRunning()) {
             switch (keyCode) {
-                case 3: // KEYCODE_HOME
-                case 4: // KEYCODE_BACK
+                case KeyEvent.KEYCODE_HOME:
+                case KeyEvent.KEYCODE_BACK:
                     return super.onKeyDown(keyCode, event);
                 default:
                     return true;
@@ -940,10 +948,10 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
             return super.onKeyUp(keyCode, event);
         }
         switch (keyCode) {
-            case 79:  // KEYCODE_HEADSETHOOK
-            case 85:  // KEYCODE_MEDIA_PLAY_PAUSE
-            case 86:  // KEYCODE_MEDIA_STOP
-            case 127: // KEYCODE_MEDIA_PAUSE
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+            case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 setShyMode(true, true);
                 return true;
             default:
@@ -962,11 +970,7 @@ public class MainActivity extends Activity implements OnEditModeChangedListener,
                 if (appWidgetComp != null) {
                     for (AppWidgetProviderInfo appWidgetInfo : this.mAppWidgetManager.getInstalledProviders()) {
                         if (appWidgetComp.equals(appWidgetInfo.provider)) {
-                            if (appWidgetId != 0) {
-                                success = true;
-                            } else {
-                                success = false;
-                            }
+                            success = appWidgetId != 0;
                             if (success && !appWidgetComp.equals(Util.getWidgetComponentName(this))) {
                                 clearWidget(appWidgetId);
                                 success = false;

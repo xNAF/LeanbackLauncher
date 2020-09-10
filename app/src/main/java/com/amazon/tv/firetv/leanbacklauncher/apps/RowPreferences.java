@@ -4,15 +4,15 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings;
-import androidx.preference.PreferenceManager;
-
 import android.util.TypedValue;
 import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.recommendations.NotificationsServiceV4;
@@ -100,25 +100,25 @@ public class RowPreferences {
     }
 
     public static boolean setRecommendationsEnabled(Context context, boolean value) {
-        if (context.getPackageManager().checkPermission("android.permission.WRITE_SECURE_SETTINGS", context.getPackageName()) != PackageManager.PERMISSION_DENIED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1 || context.getPackageManager().checkPermission("android.permission.WRITE_SECURE_SETTINGS", context.getPackageName()) != PackageManager.PERMISSION_DENIED) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
             pref.edit().putBoolean(context.getString(R.string.pref_enable_recommendations_row), value).apply();
         } else {
             Toast.makeText(context, context.getString(R.string.recs_warning), Toast.LENGTH_LONG).show();
         }
-		// request notifications access
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-			NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-			if (!manager.isNotificationListenerAccessGranted(new ComponentName(context, NotificationsServiceV4.class))) { // ComponentName
-				// Open the permission page
-				Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
-				try {
-					context.startActivity(intent);
-            	} catch (Exception e) {
-                	// ignored
-            	}
-			}
-		}
+        // request notifications access
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (!manager.isNotificationListenerAccessGranted(new ComponentName(context, NotificationsServiceV4.class))) { // ComponentName
+                // Open the permission page
+                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+                try {
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    // ignored
+                }
+            }
+        }
         return true;
     }
 
@@ -206,100 +206,113 @@ public class RowPreferences {
 
         switch (cat) {
             case GAME:
-                    pref.edit().putInt(context.getString(R.string.pref_min_games_rows), min).apply();
-                    pref.edit().putInt(context.getString(R.string.pref_max_games_rows), max).apply();
+                pref.edit().putInt(context.getString(R.string.pref_min_games_rows), min).apply();
+                pref.edit().putInt(context.getString(R.string.pref_max_games_rows), max).apply();
             case MUSIC:
-                    pref.edit().putInt(context.getString(R.string.pref_min_music_rows), min).apply();
-                    pref.edit().putInt(context.getString(R.string.pref_max_music_rows), max).apply();
+                pref.edit().putInt(context.getString(R.string.pref_min_music_rows), min).apply();
+                pref.edit().putInt(context.getString(R.string.pref_max_music_rows), max).apply();
             case VIDEO:
-                    pref.edit().putInt(context.getString(R.string.pref_min_videos_rows), min).apply();
-                    pref.edit().putInt(context.getString(R.string.pref_max_videos_rows), max).apply();
+                pref.edit().putInt(context.getString(R.string.pref_min_videos_rows), min).apply();
+                pref.edit().putInt(context.getString(R.string.pref_max_videos_rows), max).apply();
         }
         return true;
     }
+
     public static boolean setRowMin(AppCategory cat, Context context, int min) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
 
         switch (cat) {
             case GAME:
-                    pref.edit().putInt(context.getString(R.string.pref_min_games_rows), min).apply();
+                pref.edit().putInt(context.getString(R.string.pref_min_games_rows), min).apply();
             case MUSIC:
-                    pref.edit().putInt(context.getString(R.string.pref_min_music_rows), min).apply();
+                pref.edit().putInt(context.getString(R.string.pref_min_music_rows), min).apply();
             case VIDEO:
-                    pref.edit().putInt(context.getString(R.string.pref_min_videos_rows), min).apply();
+                pref.edit().putInt(context.getString(R.string.pref_min_videos_rows), min).apply();
         }
         return true;
     }
+
     public static boolean setRowMax(AppCategory cat, Context context, int max) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
 
         switch (cat) {
             case GAME:
-                    pref.edit().putInt(context.getString(R.string.pref_max_games_rows), max).apply();
+                pref.edit().putInt(context.getString(R.string.pref_max_games_rows), max).apply();
             case MUSIC:
-                    pref.edit().putInt(context.getString(R.string.pref_max_music_rows), max).apply();
+                pref.edit().putInt(context.getString(R.string.pref_max_music_rows), max).apply();
             case VIDEO:
-                    pref.edit().putInt(context.getString(R.string.pref_max_videos_rows), max).apply();
+                pref.edit().putInt(context.getString(R.string.pref_max_videos_rows), max).apply();
         }
         return true;
     }
+
     public static int getAppsMax(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
         return pref.getInt(context.getString(R.string.pref_max_apps), res.getInteger(R.integer.two_row_cut_off));
     }
+
     public static boolean setAppsMax(Context context, int max) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Resources res = context.getResources();
         pref.edit().putInt(context.getString(R.string.pref_max_apps), max).apply();
         return true;
     }
-	public static int getBannersSize(Context context) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		return pref.getInt("banner_size", 100);
-	}
-	public static boolean setBannersSize(Context context, int size) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		if (size > 49 && size < 201)
-			pref.edit().putInt("banner_size", size).apply();
-		return true;
-	}
-	public static int getCorners(Context context) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		int targetCorners = (int) context.getResources().getDimensionPixelOffset(R.dimen.banner_corner_radius);
-		return pref.getInt("banner_corner_radius", targetCorners);
-	}
-	public static boolean setCorners(Context context, int radius) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		// if (radius > 0)
-			pref.edit().putInt("banner_corner_radius", radius).apply();
-		return true;
-	}
-	public static int getFrameWidth(Context context) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		int targetStroke = (int) context.getResources().getDimensionPixelSize(R.dimen.banner_frame_stroke);
-		return pref.getInt("banner_frame_stroke", targetStroke);
-	}
-	public static boolean setFrameWidth(Context context, int width) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		if (width > 0)
-			pref.edit().putInt("banner_frame_stroke", width).apply();
-		return true;
-	}
-	public static int getFrameColor(Context context) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		int targetColor = (int) context.getResources().getColor(R.color.banner_focus_frame_color);
-		return pref.getInt("banner_focus_frame_color", targetColor);
-	}
-	public static boolean setFrameColor(Context context, int color) {
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-		// if (color > 0)
-			pref.edit().putInt("banner_focus_frame_color", color).apply();
-		return true;
-	}
-	public static float dimensionInDp(Context context, int dimensionInPixel) {
-		return (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimensionInPixel, context.getResources().getDisplayMetrics());
-	}
+
+    public static int getBannersSize(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        return pref.getInt("banner_size", 100);
+    }
+
+    public static boolean setBannersSize(Context context, int size) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        if (size > 49 && size < 201)
+            pref.edit().putInt("banner_size", size).apply();
+        return true;
+    }
+
+    public static int getCorners(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int targetCorners = context.getResources().getDimensionPixelOffset(R.dimen.banner_corner_radius);
+        return pref.getInt("banner_corner_radius", targetCorners);
+    }
+
+    public static boolean setCorners(Context context, int radius) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        // if (radius > 0)
+        pref.edit().putInt("banner_corner_radius", radius).apply();
+        return true;
+    }
+
+    public static int getFrameWidth(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int targetStroke = context.getResources().getDimensionPixelSize(R.dimen.banner_frame_stroke);
+        return pref.getInt("banner_frame_stroke", targetStroke);
+    }
+
+    public static boolean setFrameWidth(Context context, int width) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        if (width > 0)
+            pref.edit().putInt("banner_frame_stroke", width).apply();
+        return true;
+    }
+
+    public static int getFrameColor(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int targetColor = context.getResources().getColor(R.color.banner_focus_frame_color);
+        return pref.getInt("banner_focus_frame_color", targetColor);
+    }
+
+    public static boolean setFrameColor(Context context, int color) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        // if (color > 0)
+        pref.edit().putInt("banner_focus_frame_color", color).apply();
+        return true;
+    }
+
+    public static float dimensionInDp(Context context, int dimensionInPixel) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dimensionInPixel, context.getResources().getDisplayMetrics());
+    }
 }

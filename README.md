@@ -1,11 +1,8 @@
 Hi!
 
-LeanbackLauncher - alternative ATV launcher for API 22 and higher
+Leanback Launcher - fork of native ATV launcher
 
 This project is my testing ground for learning the Java language 
-and based on Tsynik`s ideas.
+and based on @tsynik`s ideas.
 
-The samurai's way is to adapt them for yourself.
-
-Всегда следует брать от людей лучшее. 
-У одного возьми ум, у другого вежливость, у третьего деньги.
+The way of samurai's is to adapt world for yourself.

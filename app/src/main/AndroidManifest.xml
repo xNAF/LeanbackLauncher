@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<manifest 
+<manifest
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    
+
     package="com.amazon.tv.leanbacklauncher">
-
-
-
 
 
     <uses-feature
@@ -37,7 +34,7 @@
         android:name="android.permission.BIND_APPWIDGET"
         tools:ignore="ProtectedPermissions" />
 
-    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
 
     <uses-permission
         android:name="android.permission.CHANGE_COMPONENT_ENABLED_STATE"
@@ -75,6 +72,7 @@
         tools:ignore="ProtectedPermissions" />
 
     <permission android:name="com.amazon.tv.leanbacklauncher.permission.MIGRATE_RECOMMENDATIONS_DATA" />
+
     <uses-permission android:name="com.amazon.tv.leanbacklauncher.recommendations.permission.RECOMMENDATIONS" />
 
     <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA" />
@@ -83,22 +81,16 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
 
-
-
-
     <application
         android:name="com.amazon.tv.leanbacklauncher.LauncherApplication"
         android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_descriptor"
         android:banner="@drawable/ic_banner_launcher"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:requiredForAllUsers="true"
         android:supportsRtl="false"
         android:theme="@style/LeanbackLauncherTheme">
-
-
-
 
 
         <meta-data
@@ -108,9 +100,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-
-
 
 
         <activity
@@ -123,10 +112,12 @@
             android:stateNotNeeded="true">
             <intent-filter android:priority="3">
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="fireos.intent.category.MAIN_HOME" />
             </intent-filter>
@@ -161,14 +152,11 @@
         </activity>
 
 
-
-
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.amazon.tv.leanbacklauncher.fileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
@@ -179,9 +167,6 @@
             android:authorities="com.amazon.tv.tvrecommendations.migration"
             android:exported="true"
             android:permission="com.amazon.tv.leanbacklauncher.permission.MIGRATE_RECOMMENDATIONS_DATA" />
-
-
-
 
 
         <receiver android:name="com.amazon.tv.leanbacklauncher.MediaButtonBroadcastReceiver">
@@ -195,9 +180,6 @@
                 <action android:name="android.intent.action.WALLPAPER_CHANGED" />
             </intent-filter>
         </receiver>
-
-
-
 
 
         <service
@@ -216,13 +198,7 @@
         <service android:name="com.amazon.tv.firetv.tvrecommendations.NotificationListenerMonitor" />
 
 
-
-
-
     </application>
-
-
-
 
 
 </manifest>

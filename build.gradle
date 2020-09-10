@@ -34,8 +34,8 @@ task clean(type: Delete) {
 
 tasks.withType(JavaCompile) {
 
-    // options.compilerArgs << "-Xlint:all" << "-Werror" 
-       options.compilerArgs << '-Xlint:unchecked'
-       options.deprecation = true
+ // options.compilerArgs << '-Xlint:all' << '-Werror'
+    options.compilerArgs << '-Xlint:unchecked'
+    options.deprecation = true
 
 }

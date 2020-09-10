@@ -15,12 +15,8 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -29,12 +25,13 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazon.tv.leanbacklauncher.animation.AnimatorLifecycle;
-import com.bumptech.glide.request.target.SizeReadyCallback;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.widget.PlayingIndicatorView;
-
-import java.util.Objects;
+import com.bumptech.glide.request.target.SizeReadyCallback;
 
 public class NowPlayingCardView extends RecommendationView {
     private boolean mAnimationStarted;
@@ -101,8 +98,8 @@ public class NowPlayingCardView extends RecommendationView {
                 NowPlayingCardView.this.mPlayingIndicator.setVisibility(View.GONE);
             }
         });
-        this.mFadeInAnimation.playSequentially(new Animator[]{pauseFadeOutAnim, threeBarFadeInAnimator});
-        this.mFadeOutAnimation.playSequentially(new Animator[]{threeBarFadeOutAnimator, pauseFadeInAnim});
+        this.mFadeInAnimation.playSequentially(pauseFadeOutAnim, threeBarFadeInAnimator);
+        this.mFadeOutAnimation.playSequentially(threeBarFadeOutAnimator, pauseFadeInAnim);
     }
 
     public void stopIconAnimation() {
@@ -157,16 +154,18 @@ public class NowPlayingCardView extends RecommendationView {
                 NowPlayingCardView.this.adjustAnimationState();
             }
         };
-
-        this.mHandler = new Handler(Objects.requireNonNull(Looper.myLooper())) {
-            public void handleMessage(Message msg){
-                if (msg.what == 1) {
-                    NowPlayingCardView.this.updatePlayProgress();
-                    NowPlayingCardView.this.mHandler.sendEmptyMessageDelayed(1, (long) NowPlayingCardView.this.mUpdateInterval);
+        this.mHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        NowPlayingCardView.this.updatePlayProgress();
+                        NowPlayingCardView.this.mHandler.sendEmptyMessageDelayed(1, NowPlayingCardView.this.mUpdateInterval);
+                        return;
+                    default:
+                        return;
                 }
             }
         };
-
         this.mUpdateInterval = getResources().getInteger(R.integer.now_playing_card_update_interval_ms);
         this.mPlayingIndicator = new PlayingIndicatorView(context, null);
         this.mPlayingIndicator.setVisibility(View.GONE);
@@ -240,7 +239,7 @@ public class NowPlayingCardView extends RecommendationView {
         if (this.mPlayerState == 3) {
             this.mHandler.removeMessages(1);
             updatePlayProgress();
-            this.mHandler.sendEmptyMessageDelayed(1, (long) this.mUpdateInterval);
+            this.mHandler.sendEmptyMessageDelayed(1, this.mUpdateInterval);
         }
     }
 
@@ -283,11 +282,7 @@ public class NowPlayingCardView extends RecommendationView {
 
     public void setPlayerState(int state, long currentPosMs, long stateChangeTimeMs) {
         boolean unchangedState;
-        if (this.mPlayerState == state) {
-            unchangedState = true;
-        } else {
-            unchangedState = false;
-        }
+        unchangedState = this.mPlayerState == state;
         this.mPlayerState = state;
         this.mPlayerPosMs = currentPosMs;
         this.mTimeUpdateMs = stateChangeTimeMs;
@@ -310,7 +305,7 @@ public class NowPlayingCardView extends RecommendationView {
             requestLayout();
         }
         if (this.mPlayerState == 3 && isAttachedToWindow()) {
-            this.mHandler.sendEmptyMessageDelayed(1, (long) this.mUpdateInterval);
+            this.mHandler.sendEmptyMessageDelayed(1, this.mUpdateInterval);
         }
     }
 

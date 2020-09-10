@@ -1,9 +1,10 @@
 package com.amazon.tv.leanbacklauncher;
 
 import android.graphics.drawable.Drawable;
+import android.view.View;
+
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
-import android.view.View;
 
 import com.amazon.tv.firetv.leanbacklauncher.apps.RowType;
 

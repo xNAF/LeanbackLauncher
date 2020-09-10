@@ -8,12 +8,12 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.leanback.app.GuidedStepFragment;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.amazon.tv.firetv.leanbacklauncher.util.SharedPreferencesUtil;
 import com.amazon.tv.leanbacklauncher.R;

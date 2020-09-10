@@ -14,7 +14,7 @@ import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 import android.util.Log;
-import com.amazon.tv.leanbacklauncher.BuildConfig;
+
 import com.amazon.tv.tvrecommendations.service.RecommendationsManager.NotificationResolver;
 
 public abstract class BaseNotificationsService extends NotificationListenerService implements NotificationResolver {
@@ -122,7 +122,7 @@ public abstract class BaseNotificationsService extends NotificationListenerServi
     public void onListenerConnected() {
         if (VERSION.SDK_INT >= 23) {
             requestInterruptionFilter(4);
-        } else if (VERSION.SDK_INT >= 22) {
+        } else if (VERSION.SDK_INT >= 21) {
             requestListenerHints(1);
         }
         // todo setOnNotificationPostedTrim(1);

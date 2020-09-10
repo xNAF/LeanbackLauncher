@@ -2,13 +2,13 @@ package com.amazon.tv.leanbacklauncher.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.leanback.app.GuidedStepFragment;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist.Guidance;
 import androidx.leanback.widget.GuidedAction;
 import androidx.leanback.widget.GuidedAction.Builder;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.apps.AppsManager;

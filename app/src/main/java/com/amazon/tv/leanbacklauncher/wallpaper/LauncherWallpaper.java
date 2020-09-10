@@ -5,14 +5,16 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import androidx.leanback.graphics.ColorFilterCache;
-import androidx.leanback.graphics.ColorFilterDimmer;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
+import androidx.leanback.graphics.ColorFilterCache;
+import androidx.leanback.graphics.ColorFilterDimmer;
+
 import com.amazon.tv.leanbacklauncher.HomeScrollManager.HomeScrollFractionListener;
 import com.amazon.tv.leanbacklauncher.MainActivity;
 import com.amazon.tv.leanbacklauncher.R;
@@ -87,12 +89,12 @@ public class LauncherWallpaper extends FrameLayout implements HomeScrollFraction
 
     protected void onFinishInflate() {
         super.onFinishInflate();
-        this.mWallpaper = (WallpaperImage) findViewById(R.id.wallpaper);
-        this.mBackground = (WallpaperImage) findViewById(R.id.launcher_background);
-        this.mOverlay = (AnimatedLayer) findViewById(R.id.animation_layer);
-        this.mFadeMaskExt = (AnimatedLayer) findViewById(R.id.fade_mask_extension);
-        this.mVideoFadeMask = (FadeMaskView) findViewById(R.id.video_fade_mask);
-        this.mVideoFadeMaskExt = (ImageView) findViewById(R.id.video_fade_mask_extension);
+        this.mWallpaper = findViewById(R.id.wallpaper);
+        this.mBackground = findViewById(R.id.launcher_background);
+        this.mOverlay = findViewById(R.id.animation_layer);
+        this.mFadeMaskExt = findViewById(R.id.fade_mask_extension);
+        this.mVideoFadeMask = findViewById(R.id.video_fade_mask);
+        this.mVideoFadeMaskExt = findViewById(R.id.video_fade_mask_extension);
         if (this.mVideoFadeMask != null) {
             Bitmap videoMask = Partner.get(getContext()).getSystemBackgroundVideoMask();
             if (videoMask == null) {

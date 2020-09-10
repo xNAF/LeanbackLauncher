@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.amazon.tv.leanbacklauncher.EditableAppsRowView;
 import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.animation.EditModeUninstallAnimationHolder;
@@ -55,12 +56,12 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
 
     protected void onFinishInflate() {
         super.onFinishInflate();
-        this.mUninstallCircle = (ImageView) findViewById(R.id.uninstall_area_circle);
-        this.mUninstallIconCircle = (ImageView) findViewById(R.id.uninstall_icon_circle);
-        this.mUninstallIcon = (ImageView) findViewById(R.id.uninstall_icon);
-        this.mUninstallText = (TextView) findViewById(R.id.uninstall_text);
-        this.mFinishButton = (Button) findViewById(R.id.finish_button);
-        this.mUninstallApp = (ImageView) findViewById(R.id.uninstall_app_banner);
+        this.mUninstallCircle = findViewById(R.id.uninstall_area_circle);
+        this.mUninstallIconCircle = findViewById(R.id.uninstall_icon_circle);
+        this.mUninstallIcon = findViewById(R.id.uninstall_icon);
+        this.mUninstallText = findViewById(R.id.uninstall_text);
+        this.mFinishButton = findViewById(R.id.finish_button);
+        this.mUninstallApp = findViewById(R.id.uninstall_app_banner);
         this.mFocusAnimator = new ViewFocusAnimator(this.mUninstallApp);
         this.mFocusAnimator.setFocusImmediate(true);
         float zDeltaIcon = (float) getResources().getDimensionPixelOffset(R.dimen.edit_uninstall_icon_z);
@@ -77,7 +78,7 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
     }
 
     public void onEditModeChanged(boolean editMode) {
-        int i = 0;
+        int i = View.VISIBLE;
         if (!editMode) {
             setBannerUninstallMode(false);
             if (hasFocus()) {
@@ -85,7 +86,7 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
             }
         }
         if (!editMode) {
-            i = 8;
+            i = View.GONE;
         }
         setVisibility(i);
         setAlpha(editMode ? 1.0f : 0.0f);
@@ -93,7 +94,7 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
 
     public void onSelectedChanged(BannerView v, boolean selected) {
         int i;
-        int i2 = 8;
+        int i2 = View.GONE;
         if (selected) {
             this.mCurSelectedBanner = v;
         } else {
@@ -101,35 +102,35 @@ public final class EditModeView extends RelativeLayout implements OnClickListene
         }
         ImageView imageView = this.mUninstallIconCircle;
         if (selected) {
-            i = 0;
+            i = View.VISIBLE;
         } else {
-            i = 8;
+            i = View.GONE;
         }
         imageView.setVisibility(i);
         TextView textView = this.mUninstallText;
         if (selected) {
-            i = 0;
+            i = View.VISIBLE;
         } else {
-            i = 8;
+            i = View.GONE;
         }
         textView.setVisibility(i);
         imageView = this.mUninstallIcon;
         if (selected) {
-            i = 0;
+            i = View.VISIBLE;
         } else {
-            i = 8;
+            i = View.GONE;
         }
         imageView.setVisibility(i);
         imageView = this.mUninstallCircle;
         if (selected) {
-            i = 0;
+            i = View.VISIBLE;
         } else {
-            i = 8;
+            i = View.GONE;
         }
         imageView.setVisibility(i);
         Button button = this.mFinishButton;
         if (!selected) {
-            i2 = 0;
+            i2 = View.VISIBLE;
         }
         // button.setVisibility(i2); // useless DONE
     }

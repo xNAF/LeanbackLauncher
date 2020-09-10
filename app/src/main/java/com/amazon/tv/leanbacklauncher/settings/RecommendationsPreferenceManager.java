@@ -11,11 +11,11 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.DeadObjectException;
 import android.os.RemoteException;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.amazon.tv.leanbacklauncher.R;
+import androidx.core.content.ContextCompat;
+
 import com.amazon.tv.leanbacklauncher.recommendations.SwitchingRecommendationsClient;
 import com.amazon.tv.tvrecommendations.IRecommendationsService;
 
@@ -72,7 +72,7 @@ public class RecommendationsPreferenceManager {
         }
 
         protected void onConnected(IRecommendationsService service) {
-            new Task().execute(new IRecommendationsService[]{service});
+            new Task().execute(service);
         }
 
         protected void onDisconnected() {
@@ -200,7 +200,7 @@ public class RecommendationsPreferenceManager {
             } else if (!blacklist.contains(this.mPackageName)) {
                 blacklist.add(this.mPackageName);
             }
-            service.setBlacklistedPackages((String[]) blacklist.toArray(new String[0]));
+            service.setBlacklistedPackages(blacklist.toArray(new String[0]));
         }
     }
 

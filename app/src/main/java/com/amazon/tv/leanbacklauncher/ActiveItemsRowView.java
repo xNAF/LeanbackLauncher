@@ -2,11 +2,12 @@ package com.amazon.tv.leanbacklauncher;
 
 import android.content.Context;
 import android.content.res.Resources;
-import androidx.leanback.widget.HorizontalGridView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.OnHierarchyChangeListener;
+
+import androidx.leanback.widget.HorizontalGridView;
 
 import com.amazon.tv.firetv.leanbacklauncher.apps.RowPreferences;
 import com.amazon.tv.leanbacklauncher.animation.ParticipatesInScrollAnimation;

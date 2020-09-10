@@ -1,6 +1,5 @@
 package com.amazon.tv.leanbacklauncher.util;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,21 +12,24 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
+
 import com.amazon.tv.leanbacklauncher.R;
 
 public class Util {
-    @SuppressLint("WrongConstant")
     public static Intent getSearchIntent() {
         return new Intent("android.intent.action.ASSIST").addFlags(270532608);
+    }
+
+    public static boolean isAmazonDev(Context context) {
+        return context.getPackageManager().hasSystemFeature("amazon.hardware.fire_tv");
     }
 
     public static boolean isContentUri(String uriString) {
@@ -37,19 +39,53 @@ public class Util {
         return isContentUri(Uri.parse(uriString));
     }
 
+    public static final boolean isConfirmKey(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_SPACE:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_BUTTON_A:
+            case KeyEvent.KEYCODE_BUTTON_X:
+            case KeyEvent.KEYCODE_NUMPAD_ENTER:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public static boolean isContentUri(Uri uri) {
         return "content".equals(uri.getScheme()) || "file".equals(uri.getScheme());
     }
 
-    public static boolean isPackagePresent(PackageManager pkgMan, String packageName) {
+    public static boolean isPackageEnabled(Context context, String packageName) {
         try {
-            if (pkgMan.getApplicationInfo(packageName, 0) != null) {
-                return true;
-            }
-            return false;
+            return context.getPackageManager().getApplicationInfo(packageName, 0).enabled;
         } catch (NameNotFoundException e) {
             return false;
         }
+    }
+
+    public static boolean isPackagePresent(PackageManager pkgMan, String packageName) {
+        try {
+            return pkgMan.getApplicationInfo(packageName, 0) != null;
+        } catch (NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    public static boolean isSystemApp(Context context, String packageName) {
+        try {
+            return (context.getPackageManager().getApplicationInfo(packageName, 0).flags & 1) != 0;
+        } catch (NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    public static boolean isUninstallAllowed(Context context) {
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O) {
+            return context.getPackageManager().checkPermission("android.permission.REQUEST_DELETE_PACKAGES", context.getPackageName()) == PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
     }
 
     public static boolean initialRankingApplied(Context ctx) {
@@ -148,49 +184,8 @@ public class Util {
         return startActivitySafely(context, intent);
     }
 
-    public static boolean isSystemApp(Context context, String packageName) {
-        try {
-            if ((context.getPackageManager().getApplicationInfo(packageName, 0).flags & 1) != 0) {
-                return true;
-            }
-            return false;
-        } catch (NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    public static boolean isUninstallAllowed(Context context) {
-    	if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.O) {
-			if (context.getPackageManager().checkPermission("android.permission.REQUEST_DELETE_PACKAGES", context.getPackageName()) != PackageManager.PERMISSION_GRANTED) {
-			return false;
-			}
-		}
-		return true;
-    }
-
-    public static boolean isPackageEnabled(Context context, String packageName) {
-        try {
-                return context.getPackageManager().getApplicationInfo(packageName, 0).enabled;
-        } catch (NameNotFoundException e) {
-            return false;
-        }
-    }
-
     public static void playErrorSound(Context context) {
         ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).playSoundEffect(9);
-    }
-
-    public static final boolean isConfirmKey(int keyCode) {
-        switch (keyCode) {
-            case 23:
-            case 62:
-            case 66:
-            case 96:
-            case 160:
-                return true;
-            default:
-                return false;
-        }
     }
 
     public static DisplayMetrics getDisplayMetrics(Context context) {

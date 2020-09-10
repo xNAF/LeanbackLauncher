@@ -228,10 +228,10 @@ fix.java
 app/.settings/org.eclipse.buildship.core.prefs
 app/.project
 .settings/org.eclipse.buildship.core.prefs
-.project
+### .project
 *.bbprojectd
 app/.classpath
 .idea/*
-.idea/misc.xml
+### .idea/misc.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,androidstudio,android

@@ -7,11 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.leanback.app.GuidedStepSupportFragment;
 import androidx.leanback.widget.GuidanceStylist;
 import androidx.leanback.widget.GuidedAction;
-import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.amazon.tv.leanbacklauncher.BuildConfig;
 import com.amazon.tv.leanbacklauncher.R;
@@ -66,17 +66,19 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
         actions.add(info);
     }
 
-    public void updateAction(@NonNull JSONObject info){
-        String lastVersion = info.optString("name", BuildConfig.VERSION_NAME).replace("v", "");
+    public void updateAction(@NonNull JSONObject info) {
+        String lastVersion = info.optString("tag_name", BuildConfig.VERSION_NAME).replace("v", "");
         JSONArray assets = info.optJSONArray("assets");
-        if(assets != null){
+        if (assets != null) {
             JSONObject firstAssets = assets.optJSONObject(0);
-            if(firstAssets.optString("content_type").equals("application/vnd.android.package-archive")){
+            if (firstAssets.optString("content_type").equals("application/vnd.android.package-archive")) {
                 DOWNLOAD_LINK = firstAssets.optString("browser_download_url");
             }
         }
-        Double lastVersionDouble = Double.parseDouble(lastVersion);
-        Double currentVersionDouble = Double.parseDouble(BuildConfig.VERSION_NAME);
+        Double lastVersionDouble;
+        try { lastVersionDouble = Double.parseDouble(lastVersion); } catch (NumberFormatException npe) { lastVersionDouble = 0d; }
+        Double currentVersionDouble;
+        try { currentVersionDouble = Double.parseDouble(BuildConfig.VERSION_NAME); } catch (NumberFormatException npe) { currentVersionDouble = 0d; }
 
         GuidedAction actionInfo = findActionById(1);
         actionInfo.setTitle(String.format("%s %s", getString(R.string.app_name), info.optString("name")));
@@ -84,7 +86,7 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
         int position = findActionPositionById(actionInfo.getId());
         notifyActionChanged(position);
 
-        if(lastVersionDouble.compareTo(currentVersionDouble) > 0){
+        if (lastVersionDouble.compareTo(currentVersionDouble) > 0) {
             actionInfo.setDescription(getString(R.string.update_new_version));
             List<GuidedAction> listActions = new ArrayList<>();
             listActions.add(new GuidedAction.Builder(requireActivity())
@@ -109,13 +111,13 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
     @Override
     public void onGuidedActionClicked(GuidedAction action) {
         super.onGuidedActionClicked(action);
-        if (action.getId() == 3L && !DOWNLOAD_LINK.isEmpty()){
-            new Download(DOWNLOAD_LINK, Objects.requireNonNull(requireContext().getExternalCacheDir()).toString());
+        if (action.getId() == 3L && !DOWNLOAD_LINK.isEmpty()) {
+            new Download(DOWNLOAD_LINK, Objects.requireNonNull(Objects.requireNonNull(getContext()).getExternalCacheDir()).toString());
         }
     }
 
     private class GetInfo extends AsyncTask<String, Void, String> {
-        public GetInfo(String url){
+        public GetInfo(String url) {
             this.execute(url);
         }
 
@@ -123,19 +125,19 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
         protected String doInBackground(String... strings) {
             HttpsURLConnection urlConnection = null;
 
-            try{
+            try {
                 URL url = new URL(strings[0]);
                 urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.connect();
 
                 int responseCode = urlConnection.getResponseCode();
-                if(responseCode == HttpsURLConnection.HTTP_OK){
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
                     return readStream(urlConnection.getInputStream());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if(urlConnection != null) {
+                if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
             }
@@ -154,7 +156,7 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
         }
 
         private String readStream(InputStream in) throws IOException {
-            if (in == null){
+            if (in == null) {
                 return null;
             }
             InputStreamReader inputStreamReader = new InputStreamReader(in);
@@ -175,8 +177,8 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
     private class Download extends AsyncTask<String, Void, File> {
         private static final int BUFFER_SIZE = 4096;
 
-        public Download(String url, String filePath){
-            System.out.println("Start download to "+ filePath);
+        public Download(String url, String filePath) {
+            System.out.println("Start download to " + filePath);
             this.execute(url, filePath);
         }
 
@@ -186,13 +188,13 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
             String saveDir = strings[1];
             HttpsURLConnection urlConnection = null;
 
-            try{
+            try {
                 URL url = new URL(fileURL);
                 urlConnection = (HttpsURLConnection) url.openConnection();
                 urlConnection.connect();
 
                 int responseCode = urlConnection.getResponseCode();
-                if(responseCode == HttpsURLConnection.HTTP_OK){
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
                     String fileName = "";
                     String disposition = urlConnection.getHeaderField("Content-Disposition");
                     String contentType = urlConnection.getContentType();
@@ -201,7 +203,7 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
                         // extracts file name from header field
                         int index = disposition.indexOf("filename=");
                         if (index > 0) {
-                            fileName = disposition.substring(index + 9, disposition.length());
+                            fileName = disposition.substring(index + 9);
                         }
                     } else {
                         fileName = fileURL.substring(fileURL.lastIndexOf("/") + 1);
@@ -230,7 +232,7 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if(urlConnection != null) {
+                if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
             }
@@ -243,7 +245,7 @@ public class LegacyUpdatePreferenceFragment extends GuidedStepSupportFragment {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if(Build.VERSION.SDK_INT < 23){
+            if (Build.VERSION.SDK_INT < 23) {
                 intent.setDataAndType(Uri.fromFile(f), "application/vnd.android.package-archive");
             } else {
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

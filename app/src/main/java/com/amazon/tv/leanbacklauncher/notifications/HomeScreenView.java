@@ -1,6 +1,5 @@
 package com.amazon.tv.leanbacklauncher.notifications;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -48,14 +47,13 @@ public class HomeScreenView extends ViewFlipper {
         // this.mNowPlayCardListener = new NowPlayCardListener(context);
     }
 
-    @SuppressLint("CutPasteId")
     protected void onFinishInflate() {
         super.onFinishInflate();
         this.mNotifRowViewIndex = indexOfChild(findViewById(R.id.list));
         this.mPreparingViewIndex = indexOfChild(findViewById(R.id.notification_preparing));
         this.mTimeoutViewIndex = indexOfChild(findViewById(R.id.notification_timeout));
-        this.mErrorMessageText = (TextView) findViewById(R.id.text_error_message);
-        this.mRow = (NotificationRowView) findViewById(R.id.list);
+        this.mErrorMessageText = findViewById(R.id.text_error_message);
+        this.mRow = findViewById(R.id.list);
         //this.mTimeoutCard = (NowPlayingCardView) findViewById(R.id.now_playing_card_timeout);
         //this.mPreparingCard = (NowPlayingCardView) findViewById(R.id.now_playing_card_preparing);
         //this.mTimeoutCard.setOnClickListener(this.mOnClickListener);

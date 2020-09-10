@@ -9,12 +9,9 @@
     <string name="app_info_unhide_app">Unhide in Launcher</string>
     <string name="app_label">Home Screen</string>
     <string name="app_name">LeanbackOnFire</string>
-    <string name="apps_row_title">Show Apps Row</string>
     <string name="banners_corners_radius">Corners Radius (px)</string>
     <string name="banners_frame_color">Frame Color (#AARRGGBB)</string>
-
     <string name="banners_frame_color_desc">The following values are also accepted for color: #RRGGBB, red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray, darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy, olive, purple, silver, teal.</string>
-
     <string name="banners_frame_width">Frame Width (px)</string>
     <string name="banners_prefs_desc">Apps banners options</string>
     <string name="banners_prefs_title">Banners Appearance</string>
@@ -25,7 +22,6 @@
     <string name="category_label_inputs">Inputs</string>
     <string name="category_label_music">Music</string>
     <string name="category_label_settings" />
-    <string name="category_label_store">Store</string>
     <string name="category_label_videos">Video</string>
     <string name="downloading">Downloading…</string>
     <string name="edit_finish_button_text">Done</string>
@@ -35,11 +31,12 @@
     <string name="favorites_row_title">Show Favorites Row</string>
     <string name="file_no_access">File not accessible!</string>
     <string name="fixed_order_action_description">Order apps and games to your liking</string>
-    <string name="fixed_order_action_title">Customize order</string>
     <string name="focused_search_hint_text">Click to search</string>
     <string name="focused_search_keyboard_hint_text">Click to type</string>
     <string name="focused_search_mic_hint_text">Click to speak</string>
+
     <string name="font">sans-serif-condensed</string>
+
     <string name="games_row_title">Show Games Row</string>
     <string name="goback">Back</string>
     <string name="hidden_applications_desc">Selected apps are hidden from the home screen</string>
@@ -54,14 +51,15 @@
     <string name="installing">Installing…</string>
     <string name="keyboard_search_accessibility_hint">Select to type your search query</string>
     <string name="launcher_settings">Launcher</string>
+
     <string name="light_font">sans-serif-light</string>
+
     <string name="max_apps_rows_title">Max Apps Rows</string>
     <string name="max_apps_title">Apps on One Row</string>
     <string name="max_favorites_rows_title">Max Favorites Rows</string>
     <string name="max_games_rows_title">Max Games Rows</string>
     <string name="max_music_rows_title">Max Music Rows</string>
     <string name="max_rows_title">Max Rows</string>
-    <string name="max_store_rows_title">Max Store Rows</string>
     <string name="max_videos_rows_title">Max Videos Rows</string>
     <string name="mic_search_accessibility_hint">Select to speak your search query</string>
     <string name="music_row_title">Show Music Row</string>
@@ -76,41 +74,37 @@
     <string name="now_playing_card_paused">Paused</string>
     <string name="now_playing_card_playing">Now Playing</string>
     <string name="now_playing_card_stopped">Stopped</string>
-    <string name="pref_enable_apps_row">enable_apps_row</string>
     <string name="pref_enable_favorites_row">enable_favorites_row</string>
     <string name="pref_enable_games_row">enable_games_row</string>
     <string name="pref_enable_inputs_row">enable_inputs_row</string>
     <string name="pref_enable_music_row">enable_music_row</string>
     <string name="pref_enable_recommendations_row">enable_recommendations_row</string>
-    <string name="pref_enable_store_row">enable_store_row</string>
     <string name="pref_enable_videos_row">enable_videos_row</string>
     <string name="pref_max_apps">max_apps</string>
     <string name="pref_max_apps_rows">max_apps_rows</string>
     <string name="pref_max_favorites_rows">max_favorites_rows</string>
     <string name="pref_max_games_rows">max_games_rows</string>
     <string name="pref_max_music_rows">max_music_rows</string>
-    <string name="pref_max_store_rows">max_store_rows</string>
     <string name="pref_max_videos_rows">max_videos_rows</string>
     <string name="pref_min_apps_rows">min_apps_rows</string>
     <string name="pref_min_favorites_rows">min_favorites_rows</string>
     <string name="pref_min_games_rows">min_games_rows</string>
     <string name="pref_min_music_rows">min_music_rows</string>
-    <string name="pref_min_store_rows">min_store_rows</string>
     <string name="pref_min_videos_rows">min_videos_rows</string>
+    <string name="preference_off">OFF</string>
+    <string name="preference_on">ON</string>
     <string name="progress_percent">%1$d%%</string>
     <string name="recency_order_action_description">Apps and games ordered based on recent usage</string>
-    <string name="recency_order_action_title">Recency order</string>
     <string name="recm_service_name">Recommendations Service</string>
     <string name="recommendation_blacklist_action_title">Recommendations Sources</string>
     <string name="recommendation_blacklist_content_description">Selected sources may display recommendations on the home screen. To hide these, turn off recommendations from specific sources.</string>
     <string name="recommendation_blacklist_content_title">Recommendations row</string>
-    <string name="store_row_title">Show Store Row</string>
+    <string name="recommendation_row_empty_message_no_connection">No internet connection at this time</string>
+    <string name="recommendation_row_empty_message_no_recs">No recommendations available at this time</string>
 
     <string name="recommendation_row_empty_message_recs_disabled">"Some recommendations are hidden
 To enable, go to Settings"</string>
 
-    <string name="recommendation_row_empty_message_no_connection">No internet connection at this time</string>
-    <string name="recommendation_row_empty_message_no_recs">No recommendations available at this time</string>
     <string name="recommendation_row_preparing_message">Preparing Recommendations</string>
     <string name="recs_row_title">Recommendations Row</string>
 
@@ -125,6 +119,7 @@ com.amazon.device.sale.service
 or recommendations will not work properly."</string>
 
     <string name="regular_font">sans-serif</string>
+
     <string name="reset_wallpaper_action_desc">Use default image</string>
     <string name="reset_wallpaper_action_title">Reset Wallpaper</string>
     <string name="restore_pending">Restore pending…</string>
@@ -134,7 +129,6 @@ or recommendations will not work properly."</string>
     <string name="select_app_order_action_description_fixed">Custom order</string>
     <string name="select_app_order_action_description_recency">Recency order</string>
     <string name="select_app_order_action_title">Organize apps and games</string>
-    <string name="select_app_order_content_title">Organize apps and games</string>
     <string name="select_wallpaper_action_desc">Select desired background image</string>
     <string name="select_wallpaper_action_title">Choose Wallpaper</string>
     <string name="settings_dialog_title">Home screen</string>
@@ -142,7 +136,6 @@ or recommendations will not work properly."</string>
     <string name="system_settings">System</string>
     <string name="title_app_edit_mode">Reorder apps mode</string>
     <string name="title_game_edit_mode">Reorder games mode</string>
-    <string name="title_store_edit_mode">Reorder store mode</string>
     <string name="unknown_album">Unknown</string>
     <string name="unknown_album_artist">Unknown</string>
     <string name="unknown_artist">Unknown</string>
@@ -157,8 +150,6 @@ or recommendations will not work properly."</string>
     <string name="update_no_info">No information</string>
     <string name="update_no_updates">No updates found</string>
     <string name="update_pending">Update pending…</string>
-    <string name="preference_off">OFF</string>
-    <string name="preference_on">ON</string>
     <string name="videos_row_title">Show Videos Row</string>
     <string name="wallpaper_title">Default Wallpaper</string>
 

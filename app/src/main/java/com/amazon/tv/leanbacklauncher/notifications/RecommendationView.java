@@ -15,8 +15,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
@@ -24,10 +22,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.Request;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+
 import com.amazon.tv.leanbacklauncher.DimmableItem;
 import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.leanbacklauncher.RoundedRectOutlineProvider;
@@ -38,6 +35,10 @@ import com.amazon.tv.leanbacklauncher.animation.ViewFocusAnimator;
 import com.amazon.tv.leanbacklauncher.capabilities.LauncherConfiguration;
 import com.amazon.tv.leanbacklauncher.trace.AppTrace;
 import com.amazon.tv.leanbacklauncher.trace.AppTrace.TraceTag;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 
 public abstract class RecommendationView extends ViewGroup implements Target<Bitmap>, DimmableItem, ParticipatesInLaunchAnimation, ParticipatesInScrollAnimation, ViewFocusAnimator.OnFocusLevelChangeListener {
     private static RoundedRectOutlineProvider sOutline;
@@ -248,18 +249,18 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
                 if (contentText == null || contentText.toString().equalsIgnoreCase(title.toString())) {
                     description = title.toString();
                 } else {
-                    description = String.format(getResources().getString(R.string.notification_card_view_description_title_content), new Object[]{title, contentText});
+                    description = String.format(getResources().getString(R.string.notification_card_view_description_title_content), title, contentText);
                 }
             } else if (contentText == null || contentText.toString().equalsIgnoreCase(label.toString())) {
-                description = String.format(getResources().getString(R.string.notification_card_view_description_title_label), new Object[]{title, label});
+                description = String.format(getResources().getString(R.string.notification_card_view_description_title_label), title, label);
             } else {
-                description = String.format(getResources().getString(R.string.notification_card_view_description_title_label_content), new Object[]{title, label, contentText});
+                description = String.format(getResources().getString(R.string.notification_card_view_description_title_label_content), title, label, contentText);
             }
         } else if (label != null) {
             if (contentText == null || contentText.toString().equalsIgnoreCase(label.toString())) {
                 description = label.toString();
             } else {
-                description = String.format(getResources().getString(R.string.notification_card_view_description_label_content), new Object[]{label, contentText});
+                description = String.format(getResources().getString(R.string.notification_card_view_description_label_content), label, contentText);
             }
         } else if (contentText != null) {
             description = contentText.toString();
@@ -464,7 +465,7 @@ public abstract class RecommendationView extends ViewGroup implements Target<Bit
     protected void layoutMainImage(int width) {
         if (this.mImage != null) {
             float scaledImageWidth = (((float) this.mImage.getIntrinsicWidth()) * ((float) this.mImageHeight)) / ((float) this.mImage.getIntrinsicHeight());
-            this.mImage.setBounds((int) ((((float) width) - scaledImageWidth) * 0.5f), 0, (int) Math.ceil((double) ((((float) width) + scaledImageWidth) * 0.5f)), this.mImageHeight);
+            this.mImage.setBounds((int) ((((float) width) - scaledImageWidth) * 0.5f), 0, (int) Math.ceil((((float) width) + scaledImageWidth) * 0.5f), this.mImageHeight);
         }
     }
 

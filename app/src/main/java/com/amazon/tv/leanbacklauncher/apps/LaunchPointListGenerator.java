@@ -90,17 +90,17 @@ public class LaunchPointListGenerator {
         @SuppressLint("PrivateResource")
         public void apply() {
             switch (this.mAction) {
-                case androidx.preference.R.styleable.Preference_android_icon /*0*/:
+                case 0 /*0*/:
                     LaunchPointListGenerator.this.addOrUpdatePackage(this.mPkgName);
-                case androidx.recyclerview.R.styleable.RecyclerView_android_descendantFocusability /*1*/:
+                case 1 /*1*/:
                     LaunchPointListGenerator.this.removePackage(this.mPkgName);
-                case androidx.recyclerview.R.styleable.RecyclerView_layoutManager /*2*/:
+                case 2 /*2*/:
                     LaunchPointListGenerator.this.addToBlacklist(this.mPkgName, this.mUpdatable);
-                case androidx.preference.R.styleable.Preference_android_layout /*3*/:
+                case 3 /*3*/:
                     LaunchPointListGenerator.this.removeFromBlacklist(this.mPkgName, this.mUpdatable);
-                case androidx.preference.R.styleable.Preference_android_title /*4*/:
+                case 4 /*4*/:
                     LaunchPointListGenerator.this.addOrUpdateInstallingLaunchPoint(this.mLaunchPoint);
-                case androidx.preference.R.styleable.Preference_android_selectable /*5*/:
+                case 5 /*5*/:
                     LaunchPointListGenerator.this.removeInstallingLaunchPoint(this.mLaunchPoint, this.mSuccess);
                 default:
             }
@@ -124,8 +124,8 @@ public class LaunchPointListGenerator {
             List<LaunchPoint> launcherItems = new LinkedList<>();
 
             PackageManager pkgMan = LaunchPointListGenerator.this.mContext.getPackageManager();
-            @SuppressLint("WrongConstant") List<ResolveInfo> normLaunchPoints = pkgMan.queryIntentActivities(mainIntent, 129);
-            @SuppressLint("WrongConstant") List<ResolveInfo> tvLaunchPoints = pkgMan.queryIntentActivities(tvIntent, 129);
+            List<ResolveInfo> normLaunchPoints = pkgMan.queryIntentActivities(mainIntent, 129);
+            List<ResolveInfo> tvLaunchPoints = pkgMan.queryIntentActivities(tvIntent, 129);
 
             Map<String, String> rawComponents = new HashMap<>();
             List<ResolveInfo> allLaunchPoints = new ArrayList<>();
@@ -144,13 +144,13 @@ public class LaunchPointListGenerator {
                     if (itemRawLaunchPoint.activityInfo != null && itemRawLaunchPoint.activityInfo.packageName != null && itemRawLaunchPoint.activityInfo.name != null) {
                         // any system app that isn't TV-optimized likely isn't something the user needs or wants [except for Amazon Music & Photos (which apparently don't get leanback launchers :\)]
                         if (!Util.isSystemApp(LaunchPointListGenerator.this.mContext, itemRawLaunchPoint.activityInfo.packageName) ||
-                            itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.bueller") ||
-                            itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.venezia") ||
-                            itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.imdb.tv") &&
-                            !itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.hedwig") // broken launchpoint
-                            ) {
+                                itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.bueller") ||
+                                itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.venezia") ||
+                                itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.imdb.tv") &&
+                                        !itemRawLaunchPoint.activityInfo.packageName.startsWith("com.amazon.hedwig") // broken launchpoint
+                        ) {
                             if (!rawComponents.containsKey(itemRawLaunchPoint.activityInfo.packageName) &&
-                                !itemRawLaunchPoint.activityInfo.packageName.equals(LaunchPointListGenerator.this.mContext.getPackageName())
+                                    !itemRawLaunchPoint.activityInfo.packageName.equals(LaunchPointListGenerator.this.mContext.getPackageName())
                             ) {
                                 allLaunchPoints.add(itemRawLaunchPoint);
                             } // todo optimize & don't hardcode
@@ -523,7 +523,7 @@ public class LaunchPointListGenerator {
         mainIntent.setPackage(pkgName).addCategory("android.intent.category.LAUNCHER");
         ArrayList<LaunchPoint> launchPoints = new ArrayList<>();
         PackageManager pkgMan = this.mContext.getPackageManager();
-        @SuppressLint("WrongConstant") List<ResolveInfo> rawLaunchPoints = pkgMan.queryIntentActivities(mainIntent, 129);
+        List<ResolveInfo> rawLaunchPoints = pkgMan.queryIntentActivities(mainIntent, 129);
 
         rawItt = rawLaunchPoints.iterator();
 
@@ -534,7 +534,6 @@ public class LaunchPointListGenerator {
         return launchPoints;
     }
 
-    @SuppressLint("WrongConstant")
     private Set<ComponentName> getChannelActivities() {
         HashSet<ComponentName> channelActivities = new HashSet<>();
         for (ResolveInfo info : this.mContext.getPackageManager().queryIntentActivities(new Intent("android.intent.action.VIEW", TvContract.buildChannelUri(0)), 513)) {
@@ -551,12 +550,12 @@ public class LaunchPointListGenerator {
         mainIntent.addCategory("android.intent.category.LEANBACK_SETTINGS");
         ArrayList<LaunchPoint> settingsItems = new ArrayList<>();
         PackageManager pkgMan = this.mContext.getPackageManager();
-        @SuppressLint("WrongConstant") List<ResolveInfo> rawLaunchPoints = pkgMan.queryIntentActivities(mainIntent, 129);
+        List<ResolveInfo> rawLaunchPoints = pkgMan.queryIntentActivities(mainIntent, 129);
         HashMap<ComponentName, Integer> specialEntries = new HashMap<>();
         // WI-FI
         specialEntries.put(getComponentNameForSettingsActivity("android.settings.WIFI_SETTINGS"), SettingsUtil.SettingsType.WIFI.getCode());
         if (Util.isPackageEnabled(this.mContext, "com.android.tv.settings")) {
-        	specialEntries.put(ComponentName.unflattenFromString("com.android.tv.settings/.connectivity.NetworkActivity"), SettingsUtil.SettingsType.WIFI.getCode());
+            specialEntries.put(ComponentName.unflattenFromString("com.android.tv.settings/.connectivity.NetworkActivity"), SettingsUtil.SettingsType.WIFI.getCode());
         }
         for (int ptr = 0, size = rawLaunchPoints.size(); ptr < size; ptr++) {
             ResolveInfo info = rawLaunchPoints.get(ptr);
@@ -621,7 +620,7 @@ public class LaunchPointListGenerator {
         }
         Intent mainIntent = new Intent("android.intent.action.MAIN");
         mainIntent.addCategory("android.intent.category.PREFERENCE");
-        @SuppressLint("WrongConstant") List<ResolveInfo> rawLaunchPoints = this.mContext.getPackageManager().queryIntentActivities(mainIntent, 129);
+        List<ResolveInfo> rawLaunchPoints = this.mContext.getPackageManager().queryIntentActivities(mainIntent, 129);
         int size = rawLaunchPoints.size();
         for (int ptr = 0; ptr < size; ptr++) {
             ResolveInfo info = rawLaunchPoints.get(ptr);
@@ -647,8 +646,9 @@ public class LaunchPointListGenerator {
         // ComponentName.unflattenFromString("com.amazon.tv.settings.v2/.tv.network.NetworkActivity")
         Intent mainIntent = new Intent(action);
         // mainIntent.addCategory("android.intent.category.PREFERENCE");
-        @SuppressLint("WrongConstant") List<ResolveInfo> launchPoints = this.mContext.getPackageManager().queryIntentActivities(mainIntent, 129);
-        if (BuildConfig.DEBUG) Log.d(TAG, "getComponentNameForSettingsActivity(" + action + ") got " + launchPoints.toString());
+        List<ResolveInfo> launchPoints = this.mContext.getPackageManager().queryIntentActivities(mainIntent, 129);
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "getComponentNameForSettingsActivity(" + action + ") got " + launchPoints.toString());
         // com.amazon.tv.settings.v2/.tv.network.NetworkActivity
         if (launchPoints.size() > 0) {
             int size = launchPoints.size();
@@ -681,7 +681,6 @@ public class LaunchPointListGenerator {
         if (this.prefUtil == null) {
             this.prefUtil = SharedPreferencesUtil.instance(this.mContext);
         }
-
         return this.prefUtil.isHidden(pkgName) || this.mUpdatableBlacklist.containsKey(pkgName) || this.mNonUpdatableBlacklist.containsKey(pkgName);
     }
 }

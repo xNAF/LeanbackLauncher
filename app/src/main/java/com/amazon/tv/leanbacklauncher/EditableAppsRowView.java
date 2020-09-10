@@ -5,15 +5,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.leanback.widget.OnChildViewHolderSelectedListener;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.accessibility.AccessibilityManager;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalFocusChangeListener;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.leanback.widget.OnChildViewHolderSelectedListener;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.amazon.tv.firetv.leanbacklauncher.apps.RowPreferences;
 import com.amazon.tv.leanbacklauncher.animation.ViewDimmer;
@@ -118,7 +119,7 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
             int dimensionPixelSize;
             this.mEditMode = editMode;
             if (editMode) {
-            	int size = RowPreferences.getBannersSize((Context) getContext());
+                int size = RowPreferences.getBannersSize(getContext());
                 dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.banner_width) * size / 100;
             } else {
                 dimensionPixelSize = 0;
@@ -193,10 +194,7 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
             return true;
         }
         LaunchPoint lp = getViewLaunchPoint(v);
-        if (lp == null || Util.isSystemApp(getContext(), getViewPackageName(v)) || !Util.isUninstallAllowed(getContext()) || lp.isInstalling()) {
-            return true;
-        }
-        return false;
+        return lp == null || Util.isSystemApp(getContext(), getViewPackageName(v)) || !Util.isUninstallAllowed(getContext()) || lp.isInstalling();
     }
 
     public void onEditModeExitTriggered() {
@@ -453,7 +451,7 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
     }
 
     public void setBannerDrawableUninstallState(boolean uninstalling) {
-        int i = 8;
+        int i = View.GONE;
         ViewHolder lastFocusedViewHolder = getLastFocusedViewHolderInt();
         if (lastFocusedViewHolder != null && (lastFocusedViewHolder.itemView instanceof BannerView)) {
             View itemView = lastFocusedViewHolder.itemView;
@@ -470,14 +468,14 @@ public class EditableAppsRowView extends ActiveItemsRowView implements OnGlobalF
                     int i2;
                     View icon = itemView.findViewById(R.id.banner_icon);
                     if (uninstalling) {
-                        i2 = 8;
+                        i2 = View.GONE;
                     } else {
-                        i2 = 0;
+                        i2 = View.VISIBLE;
                     }
                     icon.setVisibility(i2);
                     View text = itemView.findViewById(R.id.banner_label);
                     if (!uninstalling) {
-                        i = 0;
+                        i = View.VISIBLE;
                     }
                     text.setVisibility(i);
                 }

@@ -1,10 +1,11 @@
 package com.amazon.tv.leanbacklauncher.notifications;
 
 import android.content.Context;
-import androidx.leanback.widget.OnChildViewHolderSelectedListener;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.leanback.widget.OnChildViewHolderSelectedListener;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.amazon.tv.leanbacklauncher.ActiveItemsRowView;
 

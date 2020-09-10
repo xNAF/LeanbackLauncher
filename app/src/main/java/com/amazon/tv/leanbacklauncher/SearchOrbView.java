@@ -12,8 +12,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import androidx.leanback.widget.SearchOrbView.Colors;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -25,6 +23,9 @@ import android.widget.FrameLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
+
+import androidx.core.content.ContextCompat;
+import androidx.leanback.widget.SearchOrbView.Colors;
 
 import com.amazon.tv.leanbacklauncher.MainActivity.IdleListener;
 import com.amazon.tv.leanbacklauncher.apps.AppsManager.SearchPackageChangeListener;
@@ -113,7 +114,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
             // FIXME: versionCode deprecated in API28, only Katniss 3.13+
             int vc = this.mContext.getPackageManager().getPackageInfo("com.google.android.katniss", 0).versionCode; // 11000272
             if (vc > 11000000) {
-            	return true;
+                return true;
             }
         } catch (NameNotFoundException e) {
         }
@@ -127,16 +128,13 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
         } catch (NameNotFoundException e) {
             info = null;
         }
-        if (info != null) {
-            return true;
-        }
-        return false;
+        return info != null;
     }
 
     public void onFinishInflate() {
         super.onFinishInflate();
         this.mWidgetView = findViewById(R.id.widget_wrapper);
-        this.mMicOrbView = (androidx.leanback.widget.SearchOrbView) findViewById(R.id.mic_orb);
+        this.mMicOrbView = findViewById(R.id.mic_orb);
         this.mMicOrbView.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
                 SearchOrbView.this.setSearchState(false);
@@ -167,8 +165,8 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
         }
         this.mOrbAnimation = null;
         if (this.mWahlbergUx) {
-            this.mKeyboardOrbView = (androidx.leanback.widget.SearchOrbView) findViewById(R.id.keyboard_orb);
-            this.mKeyboardContainer = (FrameLayout) findViewById(R.id.keyboard_orb_container);
+            this.mKeyboardOrbView = findViewById(R.id.keyboard_orb);
+            this.mKeyboardContainer = findViewById(R.id.keyboard_orb_container);
             this.mKeyboardFocusedIcon = ContextCompat.getDrawable(this.mContext, R.drawable.ic_keyboard_blue);
             this.mKeyboardUnfocusedIcon = ContextCompat.getDrawable(this.mContext, R.drawable.ic_keyboard_grey);
             this.mColorBright = ContextCompat.getColor(this.mContext, R.color.search_orb_bg_bright_color);
@@ -190,8 +188,8 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
                     }
                 }
             });
-            this.mOrbAnimation = ObjectAnimator.ofFloat(this, "keyboardOrbProgress", new float[]{0.0f});
-            this.mOrbAnimation.setDuration((long) this.mKeyboardOrbAnimationDuration);
+            this.mOrbAnimation = ObjectAnimator.ofFloat(this, "keyboardOrbProgress", 0.0f);
+            this.mOrbAnimation.setDuration(this.mKeyboardOrbAnimationDuration);
         } else {
             this.mKeyboardFocusedIcon = null;
             this.mKeyboardUnfocusedIcon = null;
@@ -230,26 +228,14 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
         this.mHandler.removeCallbacks(this.mSwitchRunnable);
         boolean focused = focusIsOnSearchView();
         int old = this.mCurrentIndex;
-        if (this.mWahlbergUx && focused && !this.mMicOrbView.hasFocus()) {
-            isKeyboard = true;
-        } else {
-            isKeyboard = false;
-        }
+        isKeyboard = this.mWahlbergUx && focused && !this.mMicOrbView.hasFocus();
         int i = focused ? !isKeyboard ? -2 : -3 : -1;
         this.mCurrentIndex = i;
         if (old != this.mCurrentIndex) {
             boolean useFade;
             boolean z;
-            if (old == -1 || this.mCurrentIndex == -1) {
-                useFade = false;
-            } else {
-                useFade = true;
-            }
-            if (isReset) {
-                z = false;
-            } else {
-                z = true;
-            }
+            useFade = old != -1 && this.mCurrentIndex != -1;
+            z = !isReset;
             configSwitcher(z, focused, useFade ? 2 : 1);
             if (this.mWahlbergUx) {
                 this.mSwitcher.setText(fixItalics(getHintText(focused, isKeyboard)));
@@ -275,7 +261,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
     }
 
     private void initTextSwitcher(final Context context) {
-        this.mSwitcher = (TextSwitcher) findViewById(R.id.text_switcher);
+        this.mSwitcher = findViewById(R.id.text_switcher);
         this.mSwitcher.setAnimateFirstView(false);
         this.mSwitcher.setFactory(new ViewFactory() {
             LayoutInflater inflater = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
@@ -293,7 +279,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
                 }
                 SearchOrbView.this.configSwitcher(true, false, 0);
                 SearchOrbView.this.mSwitcher.setText(SearchOrbView.this.fixItalics(SearchOrbView.this.mTextToShow[SearchOrbView.this.mCurrentIndex]));
-                SearchOrbView.this.mHandler.postDelayed(this, (long) SearchOrbView.this.mIdleTextFlipDelay);
+                SearchOrbView.this.mHandler.postDelayed(this, SearchOrbView.this.mIdleTextFlipDelay);
             }
         };
         reset();
@@ -374,7 +360,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
 
     private void animateVisibility(View view, boolean visible) {
         view.clearAnimation();
-        ViewPropertyAnimator anim = view.animate().alpha(visible ? 1.0f : 0.0f).setDuration((long) this.mLaunchFadeDuration);
+        ViewPropertyAnimator anim = view.animate().alpha(visible ? 1.0f : 0.0f).setDuration(this.mLaunchFadeDuration);
         if (!(!this.mWahlbergUx || this.mKeyboardOrbView == null || visible)) {
             anim.setListener(new AnimatorListener() {
                 public void onAnimationStart(Animator animation) {
@@ -402,7 +388,7 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
                 this.mOrbAnimation.cancel();
             }
             if (this.mKeyboardOrbProgress != (visible ? 1.0f : 0.0f)) {
-                this.mOrbAnimation.setFloatValues(new float[]{this.mKeyboardOrbProgress, visible ? 1.0f : 0.0f});
+                this.mOrbAnimation.setFloatValues(this.mKeyboardOrbProgress, visible ? 1.0f : 0.0f);
                 this.mOrbAnimation.start();
             }
         }
@@ -413,23 +399,15 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
         boolean visible;
         int i = 0;
         int i2 = 1;
-        if (((double) prog) == 1.0d) {
-            focusable = true;
-        } else {
-            focusable = false;
-        }
-        if (prog > 0.0f) {
-            visible = true;
-        } else {
-            visible = false;
-        }
+        focusable = ((double) prog) == 1.0d;
+        visible = prog > 0.0f;
         this.mKeyboardOrbProgress = prog;
         if (this.mKeyboardOrbView != null) {
             this.mKeyboardOrbView.setFocusable(focusable);
             this.mKeyboardOrbView.setAlpha(prog);
             FrameLayout frameLayout = this.mKeyboardContainer;
             if (!visible) {
-                i = 4;
+                i = View.INVISIBLE;
             }
             frameLayout.setVisibility(i);
             this.mKeyboardContainer.setScaleX(prog);
@@ -464,18 +442,10 @@ public class SearchOrbView extends FrameLayout implements IdleListener, SearchPa
             public void onClick(View view) {
                 boolean iskeyboardSearch;
                 boolean success;
-                if (SearchOrbView.this.mKeyboardOrbView == null || !SearchOrbView.this.mKeyboardOrbView.hasFocus()) {
-                    iskeyboardSearch = false;
-                } else {
-                    iskeyboardSearch = true;
-                }
+                iskeyboardSearch = SearchOrbView.this.mKeyboardOrbView != null && SearchOrbView.this.mKeyboardOrbView.hasFocus();
                 if (!finalIsTouchExplorationEnabled) {
                     success = Util.startSearchActivitySafely(SearchOrbView.this.mContext, SearchOrbView.this.mSearchIntent, SearchOrbView.this.mClickDeviceId, iskeyboardSearch) && SearchOrbView.this.mListener != null;
-                } else if (!Util.startSearchActivitySafely(SearchOrbView.this.mContext, SearchOrbView.this.mSearchIntent, iskeyboardSearch) || SearchOrbView.this.mListener == null) {
-                    success = false;
-                } else {
-                    success = true;
-                }
+                } else success = Util.startSearchActivitySafely(SearchOrbView.this.mContext, SearchOrbView.this.mSearchIntent, iskeyboardSearch) && SearchOrbView.this.mListener != null;
                 if (success) {
                     SearchOrbView.this.animateOut();
                     SearchOrbView.this.mListener.onSearchLaunched();

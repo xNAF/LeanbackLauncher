@@ -2,6 +2,7 @@ package com.amazon.tv.leanbacklauncher.recommendations;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.Keep;
 
 import com.amazon.tv.tvrecommendations.RecommendationsClient;

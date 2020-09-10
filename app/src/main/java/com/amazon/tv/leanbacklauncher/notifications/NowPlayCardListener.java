@@ -1,6 +1,5 @@
 package com.amazon.tv.leanbacklauncher.notifications;
 
-import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -62,7 +61,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         }
 
         public void onPlaybackStateChanged(PlaybackState state) {
-            NowPlayCardListener listener = (NowPlayCardListener) this.mListener.get();
+            NowPlayCardListener listener = this.mListener.get();
             if (listener != null) {
                 if (Log.isLoggable("NowPlayCardListener", Log.DEBUG)) {
                     Log.d("NowPlayCardListener", "onPlaybackStateChanged: " + state);
@@ -72,7 +71,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         }
 
         public void onMetadataChanged(MediaMetadata metadata) {
-            NowPlayCardListener listener = (NowPlayCardListener) this.mListener.get();
+            NowPlayCardListener listener = this.mListener.get();
             if (listener != null) {
                 listener.updateMetadata(metadata);
             }
@@ -96,7 +95,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
     }
 
     public void onActiveSessionsChanged(List<MediaController> controllers) {
-        updateMediaSessionCallback(controllers.size() == 0 ? null : (MediaController) controllers.get(0));
+        updateMediaSessionCallback(controllers.size() == 0 ? null : controllers.get(0));
     }
 
     private void updateMediaSessionCallback(MediaController activeController) {
@@ -176,16 +175,16 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         if (mediaMetadata == null) {
             return null;
         }
-        Bitmap art = mediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART);
+        Bitmap art = mediaMetadata.getBitmap("android.media.metadata.ALBUM_ART");
         if (art == null) {
-            return mediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_ART);
+            return mediaMetadata.getBitmap("android.media.metadata.ART");
         }
         return art;
     }
 
     public Bitmap getBadgeIcon(MediaMetadata mediaMetadata) {
         if (mediaMetadata != null) {
-            return mediaMetadata.getBitmap(MediaMetadata.METADATA_KEY_DISPLAY_ICON);
+            return mediaMetadata.getBitmap("android.media.metadata.DISPLAY_ICON");
         }
         return null;
     }
@@ -273,7 +272,7 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         List<MediaController> controllers = sessionManager.getActiveSessions(null);
         MediaController controller = null;
         for (int i = 0; i < controllers.size(); i++) {
-            MediaController aController = (MediaController) controllers.get(i);
+            MediaController aController = controllers.get(i);
             if ((aController.getFlags() & 2) != 0) {
                 controller = aController;
                 break;
@@ -288,7 +287,6 @@ class NowPlayCardListener implements OnActiveSessionsChangedListener {
         }
     }
 
-    @SuppressLint("WrongConstant")
     private PendingIntent getPendingIntentFallback(String packageName) {
         Intent lbIntent = this.mContext.getPackageManager().getLeanbackLaunchIntentForPackage(packageName);
         if (lbIntent == null) {

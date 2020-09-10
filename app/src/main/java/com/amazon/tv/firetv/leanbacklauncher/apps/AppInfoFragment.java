@@ -3,14 +3,15 @@ package com.amazon.tv.firetv.leanbacklauncher.apps;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.leanback.app.GuidedStepFragment;
 import androidx.leanback.widget.GuidanceStylist.Guidance;
 import androidx.leanback.widget.GuidedAction;
 
-import com.amazon.tv.leanbacklauncher.R;
 import com.amazon.tv.firetv.leanbacklauncher.util.FireTVUtils;
 import com.amazon.tv.firetv.leanbacklauncher.util.SharedPreferencesUtil;
+import com.amazon.tv.leanbacklauncher.R;
 
 import java.util.ArrayList;
 
